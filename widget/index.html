@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CHATBOX-IA — CMD Widget</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="widget-container" class="theme-dark">
+
+    <!-- Terminal title bar -->
+    <div id="wa-header">
+      <div class="terminal-dots">
+        <div class="terminal-dot dot-red"></div>
+        <div class="terminal-dot dot-yellow"></div>
+        <div class="terminal-dot dot-green"></div>
+      </div>
+      <div class="terminal-title" id="contact-name">chat-twitch — bash — 380×680</div>
+      <div class="wa-online-dot conn-disconnected" id="connection-dot" title="Non connecté"></div>
+    </div>
+
+    <!-- Objectif d'abonnements -->
+    <div id="sub-goal">
+      <div class="goal-header-line">
+        <span class="goal-prefix">[GOAL]</span>
+        <span class="goal-label-text" id="goal-label">Objectif abonnements</span>
+        <span class="goal-fraction-text" id="goal-fraction">0 / 100</span>
+      </div>
+      <div class="goal-bar-line">
+        <span>[</span>
+        <span class="goal-bar-wrap">
+          <span class="goal-bar-ascii" id="goal-bar-ascii">░░░░░░░░░░░░░░░░░░░░</span>
+        </span>
+        <span>]</span>
+      </div>
+      <div class="goal-desc-line" id="goal-desc" style="display:none"></div>
+    </div>
+
+    <!-- Zone de messages -->
+    <div id="messages-container">
+      <div id="messages-list"></div>
+    </div>
+
+    <!-- Barre de saisie (décorative — prompt terminal) -->
+    <div id="wa-input-bar">
+      <span class="terminal-prompt-label" id="terminal-prompt-label">user@chat:~$</span>
+      <span class="terminal-input-fake">Envoyez un message…<span class="terminal-cursor"></span></span>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

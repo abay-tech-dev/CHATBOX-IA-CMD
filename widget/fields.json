@@ -1,0 +1,90 @@
+{
+  "twitchChannel": {
+    "type": "text",
+    "label": "Canal Twitch (connexion directe, laisser vide si StreamElements)",
+    "value": ""
+  },
+  "streamName": {
+    "type": "text",
+    "label": "Nom affiché dans la barre de titre terminal",
+    "value": "Chat Twitch"
+  },
+  "theme": {
+    "type": "dropdown",
+    "label": "Thème",
+    "value": "dark",
+    "options": [
+      { "value": "dark",  "label": "🖥️ Sombre (terminal classique)" },
+      { "value": "light", "label": "☀️ Clair" }
+    ]
+  },
+  "fontSize": {
+    "type": "slider",
+    "label": "Taille du texte",
+    "value": 14,
+    "min": 11,
+    "max": 20,
+    "steps": 1
+  },
+  "maxMessages": {
+    "type": "slider",
+    "label": "Messages maximum",
+    "value": 15,
+    "min": 5,
+    "max": 30,
+    "steps": 1
+  },
+  "messageDuration": {
+    "type": "slider",
+    "label": "Durée d'affichage en secondes (0 = permanent)",
+    "value": 0,
+    "min": 0,
+    "max": 120,
+    "steps": 5
+  },
+  "showHeader": {
+    "type": "checkbox",
+    "label": "Barre de titre terminal",
+    "value": true
+  },
+  "showInputBar": {
+    "type": "checkbox",
+    "label": "Barre de prompt (décorative)",
+    "value": true
+  },
+  "showBadges": {
+    "type": "checkbox",
+    "label": "Badges (mod, sub, VIP…)",
+    "value": true
+  },
+  "showTimestamp": {
+    "type": "checkbox",
+    "label": "Horodatage",
+    "value": true
+  },
+  "subGoalEnabled": {
+    "type": "checkbox",
+    "label": "Activer l'objectif d'abonnements",
+    "value": false
+  },
+  "subGoalLabel": {
+    "type": "text",
+    "label": "Titre de l'objectif",
+    "value": "Objectif abonnements"
+  },
+  "subGoalDesc": {
+    "type": "text",
+    "label": "Description (ex : Facecam à 100 subs !)",
+    "value": ""
+  },
+  "subGoalCurrent": {
+    "type": "number",
+    "label": "Abonnements actuels",
+    "value": 0
+  },
+  "subGoalTarget": {
+    "type": "number",
+    "label": "Objectif cible",
+    "value": 100
+  }
+}
