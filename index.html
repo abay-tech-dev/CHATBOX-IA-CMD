@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -110,7 +110,7 @@
     .sidebar-scroll::-webkit-scrollbar       { width: 4px; }
     .sidebar-scroll::-webkit-scrollbar-thumb { background: #30363d; border-radius: 2px; }
 
-    /* ── Connexion Twitch ── */
+    /* ── Twitch connection ── */
     .twitch-section {
       padding: 12px 20px;
       background: #0d1117;
@@ -785,6 +785,42 @@
 
     .toast::before { content: '> '; }
     .toast.show { transform: translateX(-50%) translateY(0); }
+    /* ── Added: selects, colors, grids ── */
+    .ctrl-select {
+      width: 100%;
+      background: #0d1117;
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      padding: 7px 8px;
+      color: var(--text);
+      font-size: 12px;
+      font-family: 'Courier New', monospace;
+      outline: none;
+      cursor: pointer;
+    }
+    .ctrl-select:focus { border-color: var(--accent); }
+
+    .ctrl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .ctrl-grid .ctrl-row { margin-bottom: 0; }
+    .ctrl-grid + .ctrl-row, .ctrl-grid + .ctrl-grid { margin-top: 11px; }
+
+    .color-row { display: flex; align-items: center; gap: 8px; }
+    .color-row input[type="color"] {
+      width: 34px; height: 26px; padding: 2px;
+      background: #0d1117; border: 1px solid var(--panel-border); border-radius: 4px; cursor: pointer;
+    }
+    .color-row span { font-size: 11px; color: var(--text-muted); }
+
+    .btn-row { display: flex; gap: 5px; margin-top: 5px; }
+    .btn-row .test-btn { flex: 1; margin: 0; justify-content: center; }
+    .btn-row .test-btn::before { content: none; }
+
+    .help-steps { font-size: 11px; color: var(--text-muted); line-height: 1.6; margin-top: 8px; }
+    .help-steps strong { color: var(--text); }
+    .help-steps code { color: var(--accent); }
+    .help-steps ol { padding-left: 16px; margin: 4px 0 10px; }
+
+    .widget-frame-wrap { transition: width .2s, height .2s; }
   </style>
 </head>
 <body>
@@ -799,207 +835,234 @@
         <div class="logo-icon">&gt;_</div>
         CHATBOX-IA <span class="logo-badge">CMD</span>
       </div>
-      <div class="logo-sub">// Prévisualisation du widget StreamElements</div>
+      <div class="logo-sub">// Live preview &amp; settings for the terminal chat widget</div>
     </div>
 
-    <!-- Connexion Twitch -->
+    <!-- Twitch connection -->
     <div class="twitch-section">
-      <div class="twitch-section-title">
-        ◈ Connexion Twitch
-      </div>
+      <div class="twitch-section-title">◈ Twitch connection</div>
       <div class="twitch-row">
-        <input class="twitch-input" id="ctrl-channel" type="text" placeholder="nom_du_canal" autocomplete="off" spellcheck="false" />
-        <button class="twitch-btn" id="twitch-connect-btn" onclick="toggleTwitchConnection()">
-          ▶ Connect
-        </button>
+        <input class="twitch-input" id="ctrl-channel" type="text" placeholder="your_channel" autocomplete="off" spellcheck="false" />
+        <button class="twitch-btn" id="twitch-connect-btn" onclick="toggleTwitchConnection()">▶ Connect</button>
       </div>
       <div class="conn-status-row">
         <div class="conn-dot conn-disconnected" id="viewer-conn-dot"></div>
-        <span class="conn-text" id="viewer-conn-text">Non connecté — entrez un canal Twitch</span>
+        <span class="conn-text" id="viewer-conn-text">Not connected — enter a Twitch channel</span>
       </div>
     </div>
 
     <div class="sidebar-scroll">
 
-      <!-- Configuration -->
+      <!-- Appearance -->
       <div class="section">
-        <div class="section-title">Configuration</div>
+        <div class="section-title">Appearance</div>
 
         <div class="ctrl-row">
-          <label class="ctrl-label" for="ctrl-name">Nom affiché dans la barre de titre</label>
-          <input class="ctrl-input" id="ctrl-name" type="text" value="Chat Twitch" placeholder="Nom du stream" />
+          <label class="ctrl-label" for="ctrl-name">Name in the title bar</label>
+          <input class="ctrl-input" id="ctrl-name" data-key="streamName" type="text" value="Twitch Chat" />
         </div>
 
-        <div class="ctrl-row">
-          <label class="ctrl-label">Thème</label>
-          <div class="theme-toggle">
-            <button class="theme-btn active" data-theme="dark">🖥️ Sombre</button>
-            <button class="theme-btn"        data-theme="light">☀️ Clair</button>
+        <div class="ctrl-grid">
+          <div class="ctrl-row">
+            <label class="ctrl-label">Theme</label>
+            <select class="ctrl-select" data-key="theme">
+              <option value="dark" selected>Dark</option>
+              <option value="light">Light</option>
+              <option value="amoled">AMOLED</option>
+            </select>
+          </div>
+          <div class="ctrl-row">
+            <label class="ctrl-label">Accent color</label>
+            <div class="color-row"><input type="color" data-key="accentColor" value="#00ff41" /><span>terminal</span></div>
+          </div>
+        </div>
+
+        <div class="ctrl-grid">
+          <div class="ctrl-row">
+            <label class="ctrl-label">Animation</label>
+            <select class="ctrl-select" data-key="messageAnimation">
+              <option value="type" selected>Typewriter</option>
+              <option value="slide">Slide</option>
+              <option value="fade">Fade</option>
+              <option value="none">None</option>
+            </select>
+          </div>
+          <div class="ctrl-row">
+            <label class="ctrl-label">Alignment</label>
+            <select class="ctrl-select" data-key="alignment">
+              <option value="left" selected>Left</option>
+              <option value="right">Right</option>
+              <option value="center">Center</option>
+            </select>
           </div>
         </div>
 
         <div class="ctrl-row">
-          <label class="ctrl-label">Taille du texte</label>
-          <div class="range-wrap">
-            <input class="ctrl-range" id="ctrl-fontsize" type="range" min="11" max="20" value="14" />
-            <span class="range-val" id="val-fontsize">14px</span>
-          </div>
+          <label class="ctrl-label">Text size</label>
+          <div class="range-wrap"><input class="ctrl-range" data-key="fontSize" data-fmt="px" type="range" min="10" max="28" value="14" /><span class="range-val"></span></div>
         </div>
-
         <div class="ctrl-row">
-          <label class="ctrl-label">Messages maximum</label>
-          <div class="range-wrap">
-            <input class="ctrl-range" id="ctrl-maxmsg" type="range" min="5" max="30" value="15" />
-            <span class="range-val" id="val-maxmsg">15</span>
-          </div>
+          <label class="ctrl-label">Chat width</label>
+          <div class="range-wrap"><input class="ctrl-range" data-key="chatWidth" data-fmt="%" type="range" min="30" max="100" step="5" value="100" /><span class="range-val"></span></div>
         </div>
-
         <div class="ctrl-row">
-          <label class="ctrl-label">Durée d'affichage (0 = permanent)</label>
-          <div class="range-wrap">
-            <input class="ctrl-range" id="ctrl-duration" type="range" min="0" max="60" step="5" value="0" />
-            <span class="range-val" id="val-duration">∞</span>
-          </div>
+          <label class="ctrl-label">3D rotation — X axis (up/down)</label>
+          <div class="range-wrap"><input class="ctrl-range" data-key="perspectiveX" data-fmt="°" type="range" min="-45" max="45" value="0" /><span class="range-val"></span></div>
+        </div>
+        <div class="ctrl-row">
+          <label class="ctrl-label">3D rotation — Y axis (left/right)</label>
+          <div class="range-wrap"><input class="ctrl-range" data-key="perspectiveY" data-fmt="°" type="range" min="-45" max="45" value="0" /><span class="range-val"></span></div>
         </div>
       </div>
 
-      <!-- Options -->
+      <!-- Messages -->
       <div class="section">
-        <div class="section-title">Options</div>
+        <div class="section-title">Messages</div>
 
-        <div class="toggle-row">
-          <span class="toggle-name">Barre de titre terminal</span>
-          <label class="toggle-switch">
-            <input type="checkbox" id="opt-header" checked />
-            <span class="toggle-track"></span>
-          </label>
+        <div class="ctrl-row">
+          <label class="ctrl-label">Maximum messages</label>
+          <div class="range-wrap"><input class="ctrl-range" data-key="maxMessages" type="range" min="3" max="30" value="15" /><span class="range-val"></span></div>
         </div>
-        <div class="toggle-row">
-          <span class="toggle-name">Prompt de saisie</span>
-          <label class="toggle-switch">
-            <input type="checkbox" id="opt-inputbar" checked />
-            <span class="toggle-track"></span>
-          </label>
+        <div class="ctrl-row">
+          <label class="ctrl-label">Message lifetime (0 = forever)</label>
+          <div class="range-wrap"><input class="ctrl-range" data-key="messageDuration" data-fmt="s" type="range" min="0" max="120" step="5" value="0" /><span class="range-val"></span></div>
         </div>
-        <div class="toggle-row">
-          <span class="toggle-name">Badges (mod, sub, VIP…)</span>
-          <label class="toggle-switch">
-            <input type="checkbox" id="opt-badges" checked />
-            <span class="toggle-track"></span>
-          </label>
+
+        <div class="ctrl-row">
+          <label class="ctrl-label">Badge style</label>
+          <select class="ctrl-select" data-key="badgeStyle">
+            <option value="text" selected>Terminal tags [MOD] [VIP] [SUB]</option>
+            <option value="icon">Icons</option>
+          </select>
         </div>
-        <div class="toggle-row">
-          <span class="toggle-name">Horodatage</span>
-          <label class="toggle-switch">
-            <input type="checkbox" id="opt-timestamp" checked />
-            <span class="toggle-track"></span>
-          </label>
+
+        <div class="ctrl-grid">
+          <div class="ctrl-row"><label class="ctrl-label">Mod</label><div class="color-row"><input type="color" data-key="modColor" value="#00ff88" /></div></div>
+          <div class="ctrl-row"><label class="ctrl-label">VIP</label><div class="color-row"><input type="color" data-key="vipColor" value="#e91e8c" /></div></div>
+        </div>
+        <div class="ctrl-grid">
+          <div class="ctrl-row"><label class="ctrl-label">Subscriber</label><div class="color-row"><input type="color" data-key="subColor" value="#ffc200" /></div></div>
+          <div class="ctrl-row"></div>
+        </div>
+
+        <div style="margin-top:8px">
+          <div class="toggle-row"><span class="toggle-name">Terminal title bar</span><label class="toggle-switch"><input type="checkbox" data-key="showHeader" checked /><span class="toggle-track"></span></label></div>
+          <div class="toggle-row"><span class="toggle-name">Prompt bar</span><label class="toggle-switch"><input type="checkbox" data-key="showInputBar" checked /><span class="toggle-track"></span></label></div>
+          <div class="toggle-row"><span class="toggle-name">Badges</span><label class="toggle-switch"><input type="checkbox" data-key="showBadges" checked /><span class="toggle-track"></span></label></div>
+          <div class="toggle-row"><span class="toggle-name">Timestamps</span><label class="toggle-switch"><input type="checkbox" data-key="showTimestamp" checked /><span class="toggle-track"></span></label></div>
+          <div class="toggle-row"><span class="toggle-name">Avatars</span><label class="toggle-switch"><input type="checkbox" data-key="showAvatars" /><span class="toggle-track"></span></label></div>
         </div>
       </div>
 
-      <!-- Objectif d'abonnements -->
+      <!-- Alerts -->
       <div class="section">
-        <div class="section-title">Objectif d'abonnements</div>
-
-        <div class="toggle-row" style="border-bottom:none">
-          <span class="toggle-name">Activer l'objectif</span>
-          <label class="toggle-switch">
-            <input type="checkbox" id="opt-subgoal" checked />
-            <span class="toggle-track"></span>
-          </label>
+        <div class="section-title">Alerts</div>
+        <div class="toggle-row" style="border-bottom:none"><span class="toggle-name">Show alert pop-ups</span><label class="toggle-switch"><input type="checkbox" data-key="showAlerts" checked /><span class="toggle-track"></span></label></div>
+        <div class="ctrl-row" style="margin-top:6px">
+          <label class="ctrl-label">Alert duration</label>
+          <div class="range-wrap"><input class="ctrl-range" data-key="alertDuration" data-fmt="s" type="range" min="2" max="15" value="5" /><span class="range-val"></span></div>
         </div>
+        <div class="btn-row">
+          <button class="test-btn" onclick="sendEvent('follow')">♥ Follow</button>
+          <button class="test-btn" onclick="sendEvent('sub')">★ Sub</button>
+          <button class="test-btn" onclick="sendEvent('gift')">🎁 Gift ×5</button>
+        </div>
+        <div class="btn-row" style="margin-bottom:6px">
+          <button class="test-btn" onclick="sendEvent('bits')">◆ Bits</button>
+          <button class="test-btn" onclick="sendEvent('tip')">$ Tip</button>
+          <button class="test-btn" onclick="sendEvent('raid')">⚔ Raid</button>
+        </div>
+      </div>
 
-        <div id="subgoal-settings" style="margin-top:10px;">
-          <div class="ctrl-row">
-            <label class="ctrl-label" for="ctrl-goal-label">Titre</label>
-            <input class="ctrl-input" id="ctrl-goal-label" type="text" value="Objectif abonnements" />
-          </div>
-          <div class="ctrl-row">
-            <label class="ctrl-label" for="ctrl-goal-desc">Description (ex : Facecam à 100 subs !)</label>
-            <input class="ctrl-input" id="ctrl-goal-desc" type="text" placeholder="Laisser vide pour masquer" />
-          </div>
-          <div class="ctrl-row">
-            <label class="ctrl-label">Objectif cible</label>
-            <div class="range-wrap">
-              <input class="ctrl-range" id="ctrl-goal-target" type="range" min="10" max="500" step="10" value="100" />
-              <span class="range-val" id="val-goal-target">100</span>
+      <!-- Goal -->
+      <div class="section">
+        <div class="section-title">Goal bar</div>
+
+        <div class="toggle-row" style="border-bottom:none"><span class="toggle-name">Show goal bar</span><label class="toggle-switch"><input type="checkbox" data-key="showGoal" id="opt-goal" /><span class="toggle-track"></span></label></div>
+
+        <div id="goal-settings" style="margin-top:8px">
+          <div class="ctrl-grid">
+            <div class="ctrl-row">
+              <label class="ctrl-label">Type</label>
+              <select class="ctrl-select" data-key="goalType">
+                <option value="followers">Followers</option>
+                <option value="subs" selected>Subscribers</option>
+                <option value="bits">Bits</option>
+                <option value="donations">Donations (€)</option>
+              </select>
+            </div>
+            <div class="ctrl-row">
+              <label class="ctrl-label">Orientation</label>
+              <select class="ctrl-select" data-key="goalOrientation">
+                <option value="horizontal" selected>Horizontal</option>
+                <option value="vertical">Vertical</option>
+              </select>
             </div>
           </div>
           <div class="ctrl-row">
-            <label class="ctrl-label">
-              Progression :
-              <span id="val-goal-current" style="color:var(--accent);font-weight:700">0</span>
-              /
-              <span id="val-goal-target-inline">100</span>
-            </label>
-            <div style="display:flex;gap:5px;margin-top:5px">
-              <button class="test-btn" style="flex:1;margin:0;justify-content:center" onclick="simSub(1)">+1 Sub</button>
-              <button class="test-btn" style="flex:1;margin:0;justify-content:center" onclick="simSub(5)">+5 Subs</button>
-              <button class="test-btn" style="flex:1;margin:0;justify-content:center" onclick="simGiftSub(3)">🎁 ×3</button>
-            </div>
+            <label class="ctrl-label">Title</label>
+            <input class="ctrl-input" data-key="goalTitle" type="text" value="Sub goal" />
           </div>
-          <button class="test-btn" style="width:100%;justify-content:center;margin-top:4px;color:var(--danger);border-color:rgba(248,81,73,.25)" onclick="resetGoal()">
-            ↺ reset goal
-          </button>
+          <div class="ctrl-row">
+            <label class="ctrl-label">Description (e.g. Facecam at 100 subs!)</label>
+            <input class="ctrl-input" data-key="goalDesc" type="text" value="" placeholder="Leave empty to hide" />
+          </div>
+          <div class="ctrl-grid">
+            <div class="ctrl-row"><label class="ctrl-label">Starting value</label><input class="ctrl-input" data-key="goalCurrent" id="ctrl-goal-current" type="number" min="0" value="0" /></div>
+            <div class="ctrl-row"><label class="ctrl-label">Target</label><input class="ctrl-input" data-key="goalTarget" type="number" min="1" value="100" /></div>
+          </div>
+          <div class="ctrl-grid">
+            <div class="ctrl-row"><label class="ctrl-label">Bar color</label><div class="color-row"><input type="color" data-key="goalColor" value="#00ff41" /></div></div>
+            <div class="ctrl-row"></div>
+          </div>
+          <div class="toggle-row" style="border-bottom:none"><span class="toggle-name">Auto-count stream events</span><label class="toggle-switch"><input type="checkbox" data-key="goalAutoTrack" checked /><span class="toggle-track"></span></label></div>
+          <div class="btn-row" style="margin-bottom:6px">
+            <button class="test-btn" onclick="bumpGoal(1)">+1</button>
+            <button class="test-btn" onclick="bumpGoal(10)">+10</button>
+            <button class="test-btn" style="color:var(--danger)" onclick="resetGoal()">↺ reset</button>
+          </div>
         </div>
       </div>
 
-      <!-- Messages test -->
+      <!-- Test messages -->
       <div class="section">
-        <div class="section-title">Messages test</div>
-
-        <button class="test-btn" onclick="sendTest('normal')">
-          msg_simple
-        </button>
-        <button class="test-btn" onclick="sendTest('mod')">
-          moderateur
-          <span class="btn-badge badge-mod">MOD</span>
-        </button>
-        <button class="test-btn" onclick="sendTestSub()">
-          abonne
-          <span class="btn-badge badge-sub">SUB</span>
-        </button>
-        <button class="test-btn" onclick="sendTest('vip')">
-          vip
-          <span class="btn-badge badge-vip">VIP</span>
-        </button>
-        <button class="test-btn" onclick="sendTest('broadcaster')">
-          broadcaster
-          <span class="btn-badge badge-bc">BC</span>
-        </button>
-        <button class="test-btn" onclick="sendTest('long')">
-          message_long
-        </button>
-
-        <button class="burst-btn" onclick="sendBurst()">
-          ⚡ rafale × 5
-        </button>
+        <div class="section-title">Test messages</div>
+        <button class="test-btn" onclick="sendTest('normal')">simple_msg</button>
+        <button class="test-btn" onclick="sendTest('mod')">moderator <span class="btn-badge badge-mod">MOD</span></button>
+        <button class="test-btn" onclick="sendTest('sub')">subscriber <span class="btn-badge badge-sub">SUB</span></button>
+        <button class="test-btn" onclick="sendTest('vip')">vip <span class="btn-badge badge-vip">VIP</span></button>
+        <button class="test-btn" onclick="sendTest('broadcaster')">broadcaster <span class="btn-badge badge-bc">LIVE</span></button>
+        <button class="test-btn" onclick="sendTest('long')">long_message</button>
+        <button class="burst-btn" onclick="sendBurst()">⚡ burst × 5</button>
       </div>
 
-      <!-- URL StreamElements -->
+      <!-- OBS / StreamElements -->
       <div class="section">
-        <div class="section-title">URL StreamElements</div>
+        <div class="section-title">Add it to your stream</div>
 
-        <div class="url-box">
-          <div class="url-text" id="widget-url-display">Chargement…</div>
+        <div class="ctrl-grid">
+          <div class="ctrl-row"><label class="ctrl-label">Source width (px)</label><input class="ctrl-input" id="ctrl-w" type="number" min="200" value="380" /></div>
+          <div class="ctrl-row"><label class="ctrl-label">Source height (px)</label><input class="ctrl-input" id="ctrl-h" type="number" min="200" value="680" /></div>
         </div>
 
-        <button class="copy-btn" id="copy-btn" onclick="copyUrl()">
-          📋 Copier l'URL
-        </button>
+        <div class="ctrl-label" style="margin-top:11px">OBS link (your channel + all the settings above)</div>
+        <div class="url-box"><div class="url-text" id="widget-url-display">Loading…</div></div>
+        <button class="copy-btn" id="copy-btn" onclick="copyUrl()">📋 Copy the OBS link</button>
 
-        <div style="background:#0d1117;border:1px solid rgba(0,255,65,.2);border-radius:var(--radius);padding:10px 12px;margin-bottom:10px;margin-top:10px;display:flex;align-items:center;gap:10px;">
-          <span style="font-size:18px;flex-shrink:0">📐</span>
-          <div>
-            <div style="font-size:10px;font-weight:700;color:var(--accent);margin-bottom:3px;letter-spacing:.5px;">TAILLE OBS RECOMMANDÉE</div>
-            <div style="font-size:12px;color:var(--text);font-family:'Courier New',monospace;">W: <strong>380</strong>px &nbsp;·&nbsp; H: <strong>680</strong>px</div>
-          </div>
+        <div class="help-steps">
+          <strong>Option A — OBS only (no account):</strong>
+          <ol>
+            <li>Type your channel above and click <strong>Connect</strong> to check it works.</li>
+            <li>Click <strong>Copy the OBS link</strong>.</li>
+            <li>OBS → <strong>+</strong> → <strong>Browser</strong> → paste the link in <strong>URL</strong> → width/height as above.</li>
+          </ol>
+          <strong>Option B — StreamElements:</strong>
+          <ol>
+            <li>Overlays → your overlay → <strong>+</strong> → Static/Custom → <strong>Custom widget</strong> → <strong>Open editor</strong>.</li>
+            <li>Paste the files from the <code>streamelements/</code> folder into the HTML, CSS, JS and FIELDS tabs.</li>
+            <li>Leave the Twitch channel field empty: StreamElements feeds the chat itself (and also sends follows &amp; tips).</li>
+          </ol>
         </div>
-
-        <p class="url-hint">
-          <strong>OBS</strong> → + Source → Navigateur → coller l'URL → régler à <strong>380 × 680 px</strong>.<br><br>
-          <strong>StreamElements</strong> → Overlay → Add widget → Custom widget → coller l'URL → Width : <strong>380</strong> / Height : <strong>680</strong>.
-        </p>
       </div>
 
     </div>
@@ -1008,46 +1071,26 @@
   <!-- ── STREAM PREVIEW ── -->
   <main class="preview">
 
-    <!-- Scene -->
     <div class="stream-scene">
       <div class="grid-floor"></div>
       <div class="scanlines"></div>
       <div class="terminal-glow"></div>
     </div>
 
-    <!-- Fake game HUD (terminal style) -->
     <div class="hud">
-
-      <!-- Top-left: stat bars -->
       <div class="hud-tl">
         <div class="hud-stat-block">
-          <div class="hud-stat-line">
-            <span class="hud-stat-label">HP</span>
-            <div class="hud-stat-bar"><div class="hud-stat-fill" style="width:72%;background:#f85149"></div></div>
-            <span>742</span>
-          </div>
-          <div class="hud-stat-line">
-            <span class="hud-stat-label">MP</span>
-            <div class="hud-stat-bar"><div class="hud-stat-fill" style="width:55%;background:#58a6ff"></div></div>
-            <span>320</span>
-          </div>
-          <div class="hud-stat-line">
-            <span class="hud-stat-label">XP</span>
-            <div class="hud-stat-bar"><div class="hud-stat-fill" style="width:88%;"></div></div>
-            <span style="font-size:9px;color:rgba(0,255,65,.4)">LV24</span>
-          </div>
+          <div class="hud-stat-line"><span class="hud-stat-label">HP</span><div class="hud-stat-bar"><div class="hud-stat-fill" style="width:72%;background:#f85149"></div></div><span>742</span></div>
+          <div class="hud-stat-line"><span class="hud-stat-label">MP</span><div class="hud-stat-bar"><div class="hud-stat-fill" style="width:55%;background:#58a6ff"></div></div><span>320</span></div>
+          <div class="hud-stat-line"><span class="hud-stat-label">XP</span><div class="hud-stat-bar"><div class="hud-stat-fill" style="width:88%;"></div></div><span style="font-size:9px;color:rgba(0,255,65,.4)">LV24</span></div>
         </div>
       </div>
-
-      <!-- Top-right: score -->
       <div class="hud-tr">
         <div class="hud-score-block">
           <div class="hud-score-value">48 320</div>
           <div class="hud-score-label">ZONE 7 · BOSS 24%</div>
         </div>
       </div>
-
-      <!-- Bottom-left: minimap -->
       <div class="hud-bl">
         <div class="minimap">
           <div class="minimap-bg"></div>
@@ -1057,8 +1100,6 @@
           <div class="minimap-enemy" style="top:20%;left:25%"></div>
         </div>
       </div>
-
-      <!-- Bottom-center: ability bar -->
       <div class="hud-bc">
         <div class="ability-bar">
           <div class="ability ready">🗡️<span class="cd"></span></div>
@@ -1068,323 +1109,233 @@
           <div class="ability">❄️<span class="cd">8s</span></div>
         </div>
       </div>
-
     </div>
 
-    <!-- Top bar -->
     <div class="stream-topbar">
       <div class="live-badge">LIVE</div>
-      <div class="stream-title" id="topbar-title">Chat Twitch · CHATBOX-IA CMD Preview</div>
-      <div class="stream-viewers">
-        <div class="viewer-dot"></div>
-        <span id="viewer-count">1 234</span> viewers
-      </div>
+      <div class="stream-title" id="topbar-title">Twitch Chat · CHATBOX-IA CMD Preview</div>
+      <div class="stream-viewers"><div class="viewer-dot"></div><span id="viewer-count">1,234</span> viewers</div>
       <div class="stream-timer" id="stream-timer">00:00:00</div>
     </div>
 
-    <!-- Widget iframe -->
-    <div class="widget-frame-wrap">
-      <iframe id="widget-frame" src="./widget/" title="CMD Chat Widget"></iframe>
+    <div class="widget-frame-wrap" id="frame-wrap">
+      <iframe id="widget-frame" src="./widget/index.html" title="CMD Chat Widget"></iframe>
     </div>
 
   </main>
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ── Connexion Twitch ─────────────────────────────────
+// =====================================================
+//   Widget bridge — everything goes through postMessage
+// =====================================================
+
+const frame = document.getElementById('widget-frame');
+const send  = (msg) => { try { frame.contentWindow.postMessage(msg, '*'); } catch (_) {} };
+
+window.addEventListener('message', ({ data }) => {
+  if (data?.type === 'cmd:ready') pushConfig();
+  if (data?.type === 'twitchStatus') updateViewerConnStatus(data.status, data.channel);
+});
+
+// =====================================================
+//   Settings ↔ controls (every input with data-key is a widget setting)
+// =====================================================
+
+const controls = [...document.querySelectorAll('[data-key]')];
+const readValue = (el) => el.type === 'checkbox' ? el.checked : (el.type === 'range' || el.type === 'number') ? +el.value : el.value;
+const INITIAL = Object.fromEntries(controls.map(el => [el.dataset.key, readValue(el)]));  // = widget defaults
+
+function currentConfig() {
+  return Object.fromEntries(controls.map(el => [el.dataset.key, readValue(el)]));
+}
+
+function refreshRangeLabels() {
+  document.querySelectorAll('input[type="range"][data-key]').forEach(el => {
+    const lab = el.parentElement.querySelector('.range-val');
+    const v = +el.value, fmt = el.dataset.fmt || '';
+    if (lab) lab.textContent = el.dataset.key === 'messageDuration' && v === 0 ? '∞' : `${v}${fmt}`;
+  });
+}
+
+function pushConfig() {
+  refreshRangeLabels();
+  document.getElementById('goal-settings').style.display = document.getElementById('opt-goal').checked ? '' : 'none';
+  send({ type: 'cmd:config', config: currentConfig() });
+  const name = document.querySelector('[data-key="streamName"]').value || 'Twitch Chat';
+  document.getElementById('topbar-title').textContent = `${name} · CHATBOX-IA CMD Preview`;
+  updateWidgetUrl();
+}
+
+controls.forEach(el => el.addEventListener(el.type === 'checkbox' || el.tagName === 'SELECT' ? 'change' : 'input', pushConfig));
+frame.addEventListener('load', () => setTimeout(pushConfig, 50));
+
+// Preview size follows the OBS source size
+function resizePreview() {
+  const w = Math.max(200, +document.getElementById('ctrl-w').value || 380);
+  const h = Math.max(200, +document.getElementById('ctrl-h').value || 680);
+  const wrap = document.getElementById('frame-wrap');
+  wrap.style.width = `${w}px`;
+  wrap.style.height = `${h}px`;
+  updateWidgetUrl();
+}
+['ctrl-w', 'ctrl-h'].forEach(id => document.getElementById(id).addEventListener('input', resizePreview));
+
+// =====================================================
+//   Twitch connection
+// =====================================================
 
 let twitchConnected = false;
 
 function toggleTwitchConnection() {
-  if (twitchConnected) {
-    disconnectTwitchViewer();
-  } else {
-    connectTwitchViewer();
-  }
+  if (twitchConnected) disconnectTwitchViewer();
+  else connectTwitchViewer();
+}
+
+function channelValue() {
+  return document.getElementById('ctrl-channel').value.trim().replace(/^#/, '').toLowerCase();
 }
 
 function connectTwitchViewer() {
-  const channel = document.getElementById('ctrl-channel').value.trim();
-  if (!channel) {
-    document.getElementById('ctrl-channel').focus();
-    return;
-  }
-  const w = win();
-  if (!w) { showToast('Widget pas encore chargé…'); return; }
-  w.CONFIG.twitchChannel = channel;
-  if (typeof w.connectTwitch === 'function') w.connectTwitch(channel);
+  const channel = channelValue();
+  if (!channel) { document.getElementById('ctrl-channel').focus(); return; }
+  send({ type: 'cmd:clear' });
+  send({ type: 'cmd:connect', channel });
+  updateViewerConnStatus('connecting', channel);
+  updateWidgetUrl();
 }
 
 function disconnectTwitchViewer() {
-  const w = win();
-  if (w && typeof w.disconnectTwitch === 'function') w.disconnectTwitch();
-  w && (w.CONFIG.twitchChannel = '');
+  send({ type: 'cmd:disconnect' });
   updateViewerConnStatus('disconnected', '');
-  twitchConnected = false;
-  const btn = document.getElementById('twitch-connect-btn');
-  btn.textContent = '▶ Connect';
-  btn.classList.remove('twitch-connected');
 }
 
 function updateViewerConnStatus(status, channel) {
   document.getElementById('viewer-conn-dot').className = `conn-dot conn-${status}`;
   document.getElementById('viewer-conn-text').textContent = {
-    connected:    `Connecté à #${channel}`,
-    connecting:   `Connexion à #${channel}…`,
-    disconnected: 'Non connecté — entrez un canal Twitch',
-    error:        `Erreur de connexion à #${channel}`,
-  }[status] ?? 'Non connecté';
+    connected:    `Connected to #${channel} — live chat in the preview`,
+    connecting:   `Connecting to #${channel}…`,
+    disconnected: 'Not connected — enter a Twitch channel',
+    error:        `Could not connect to #${channel}`,
+  }[status] ?? 'Not connected';
 
-  twitchConnected = status === 'connected';
+  twitchConnected = status === 'connected' || status === 'connecting';
   const btn = document.getElementById('twitch-connect-btn');
-  if (twitchConnected) {
-    btn.textContent = '✕ Disconnect';
-    btn.classList.add('twitch-connected');
-  } else if (status !== 'connecting') {
-    btn.textContent = '▶ Connect';
-    btn.classList.remove('twitch-connected');
-  }
+  btn.textContent = twitchConnected ? '✕ Disconnect' : '▶ Connect';
+  btn.classList.toggle('twitch-connected', twitchConnected);
 }
 
-window.addEventListener('message', (e) => {
-  if (e.data?.type === 'twitchStatus') {
-    updateViewerConnStatus(e.data.status, e.data.channel);
-  }
-});
+const chInput = document.getElementById('ctrl-channel');
+chInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') connectTwitchViewer(); });
+chInput.addEventListener('input', updateWidgetUrl);
 
-document.getElementById('ctrl-channel').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') connectTwitchViewer();
-});
-
-// ── Widget iframe helpers ────────────────────────────
-
-const frame = document.getElementById('widget-frame');
-let widgetReady = false;
-
-frame.addEventListener('load', () => {
-  widgetReady = true;
-  syncAllConfig();
-});
-
-function win() {
-  return widgetReady ? frame.contentWindow : null;
-}
-
-function syncConfig(key, value) {
-  const w = win();
-  if (!w || !w.CONFIG) return;
-  w.CONFIG[key] = value;
-  if (typeof w.applyConfig === 'function') w.applyConfig();
-}
-
-function syncAllConfig() {
-  const w = win();
-  if (!w || !w.CONFIG) return;
-  w.CONFIG.streamName      = document.getElementById('ctrl-name').value;
-  w.CONFIG.theme           = currentTheme;
-  w.CONFIG.fontSize        = parseInt(document.getElementById('ctrl-fontsize').value);
-  w.CONFIG.maxMessages     = parseInt(document.getElementById('ctrl-maxmsg').value);
-  w.CONFIG.messageDuration = parseInt(document.getElementById('ctrl-duration').value);
-  w.CONFIG.showHeader      = document.getElementById('opt-header').checked;
-  w.CONFIG.showInputBar    = document.getElementById('opt-inputbar').checked;
-  w.CONFIG.showBadges      = document.getElementById('opt-badges').checked;
-  w.CONFIG.showTimestamp   = document.getElementById('opt-timestamp').checked;
-  w.CONFIG.subGoalEnabled  = document.getElementById('opt-subgoal').checked;
-  w.CONFIG.subGoalCurrent  = goalCurrent;
-  w.CONFIG.subGoalTarget   = goalTarget;
-  w.CONFIG.subGoalLabel    = document.getElementById('ctrl-goal-label').value;
-  w.CONFIG.subGoalDesc     = document.getElementById('ctrl-goal-desc').value;
-  if (typeof w.applyConfig  === 'function') w.applyConfig();
-  if (typeof w.applySubGoal === 'function') w.applySubGoal();
-}
-
-// ── Stream name ──────────────────────────────────────
-
-document.getElementById('ctrl-name').addEventListener('input', (e) => {
-  const val = e.target.value || 'Chat Twitch';
-  syncConfig('streamName', val);
-  document.getElementById('topbar-title').textContent = `${val} · CHATBOX-IA CMD Preview`;
-});
-
-// ── Theme toggle ─────────────────────────────────────
-
-let currentTheme = 'dark';
-document.querySelectorAll('.theme-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentTheme = btn.dataset.theme;
-    syncConfig('theme', currentTheme);
-  });
-});
-
-// ── Range inputs ─────────────────────────────────────
-
-function bindRange(id, valId, cfgKey, fmt) {
-  const input = document.getElementById(id);
-  const label = document.getElementById(valId);
-  input.addEventListener('input', () => {
-    const v = parseInt(input.value);
-    label.textContent = fmt(v);
-    syncConfig(cfgKey, v);
-  });
-}
-
-bindRange('ctrl-fontsize', 'val-fontsize', 'fontSize',        v => `${v}px`);
-bindRange('ctrl-maxmsg',   'val-maxmsg',   'maxMessages',     v => String(v));
-bindRange('ctrl-duration', 'val-duration', 'messageDuration', v => v === 0 ? '∞' : `${v}s`);
-
-// ── Toggle checkboxes ────────────────────────────────
-
-[
-  ['opt-header',    'showHeader'],
-  ['opt-inputbar',  'showInputBar'],
-  ['opt-badges',    'showBadges'],
-  ['opt-timestamp', 'showTimestamp'],
-].forEach(([id, key]) => {
-  document.getElementById(id).addEventListener('change', (e) => {
-    syncConfig(key, e.target.checked);
-  });
-});
-
-// ── Sub Goal controls ────────────────────────────────
-
-let goalCurrent = 0;
-let goalTarget  = 100;
-
-document.getElementById('opt-subgoal').addEventListener('change', (e) => {
-  const enabled = e.target.checked;
-  document.getElementById('subgoal-settings').style.display = enabled ? '' : 'none';
-  syncConfig('subGoalEnabled', enabled);
-});
-
-document.getElementById('ctrl-goal-label').addEventListener('input', (e) => {
-  syncConfig('subGoalLabel', e.target.value || 'Objectif abonnements');
-});
-
-document.getElementById('ctrl-goal-desc').addEventListener('input', (e) => {
-  syncConfig('subGoalDesc', e.target.value);
-});
-
-document.getElementById('ctrl-goal-target').addEventListener('input', (e) => {
-  goalTarget = parseInt(e.target.value);
-  document.getElementById('val-goal-target').textContent       = goalTarget;
-  document.getElementById('val-goal-target-inline').textContent = goalTarget;
-  syncConfig('subGoalTarget', goalTarget);
-});
-
-function updateGoalDisplay() {
-  document.getElementById('val-goal-current').textContent = goalCurrent;
-}
-
-function simSub(amount) {
-  const w = win();
-  if (!w) { showToast('Widget pas encore chargé…'); return; }
-  goalCurrent = Math.min(goalCurrent + amount, goalTarget);
-  updateGoalDisplay();
-  if (typeof w.updateSubGoal === 'function') {
-    const names = ['StreamFan42','CasualViewer','NightWatcher','TwitchUser','SubLoyalty'];
-    w.updateSubGoal(names[Math.floor(Math.random() * names.length)], amount, 'sub');
-  }
-}
-
-function simGiftSub(amount) {
-  const w = win();
-  if (!w) { showToast('Widget pas encore chargé…'); return; }
-  goalCurrent = Math.min(goalCurrent + amount, goalTarget);
-  updateGoalDisplay();
-  if (typeof w.updateSubGoal === 'function') {
-    const gifters = ['GiftKing','SubAngel','GenerousViewer'];
-    w.updateSubGoal(gifters[Math.floor(Math.random() * gifters.length)], amount, 'giftsub');
-  }
-}
-
-function resetGoal() {
-  goalCurrent = 0;
-  updateGoalDisplay();
-  const w = win();
-  if (w && w.CONFIG) {
-    w.CONFIG.subGoalCurrent = 0;
-    if (typeof w.applySubGoal === 'function') w.applySubGoal();
-  }
-}
-
-// ── Test messages ────────────────────────────────────
+// =====================================================
+//   Test messages & events
+// =====================================================
 
 const TEST_POOL = {
   normal: [
-    { displayName: 'CasualViewer',  username: 'casualviewer',  text: 'Le stream est vraiment top ce soir ! 🔥',               badges: [],                        color: null       },
-    { displayName: 'TwitchFan42',   username: 'twitchfan42',   text: "Est-ce que quelqu'un a fait ce boss avant ?",           badges: [],                        color: '#4D96FF'  },
-    { displayName: 'RandomUser99',  username: 'randomuser99',  text: 'Bonjour à tous !',                                        badges: [],                        color: null       },
-    { displayName: 'NightWatcher',  username: 'nightwatcher',  text: 'Incroyable la dernière passe !!',                         badges: [],                        color: '#C77DFF'  },
+    { displayName: 'CasualViewer', username: 'casualviewer', text: 'The stream is so good tonight! 🔥',        badges: [],                        color: null      },
+    { displayName: 'TwitchFan42',  username: 'twitchfan42',  text: 'Has anyone beaten this boss before?',      badges: [],                        color: '#4D96FF' },
+    { displayName: 'RandomUser99', username: 'randomuser99', text: 'Hi everyone!',                              badges: [],                        color: null      },
+    { displayName: 'NightWatcher', username: 'nightwatcher', text: 'That last play was insane!!',               badges: [],                        color: '#C77DFF' },
   ],
   mod: [
-    { displayName: 'ModPuissant',   username: 'modpuissant',   text: 'Rappel : restez respectueux dans le chat 👍',            badges: [{ type: 'moderator' }],   color: '#34AE1A'  },
-    { displayName: 'ModZero',       username: 'modzero',       text: 'Timeout pour le spam, attention !',                       badges: [{ type: 'moderator' }],   color: '#2ECC71'  },
+    { displayName: 'ModPowerful',  username: 'modpowerful',  text: 'Reminder: be respectful in chat 👍',        badges: [{ type: 'moderator' }],   color: '#34AE1A' },
+    { displayName: 'ModZero',      username: 'modzero',      text: 'Timeout for spam, careful!',                badges: [{ type: 'moderator' }],   color: '#2ECC71' },
   ],
   sub: [
-    { displayName: 'SubLoyalty',    username: 'subloyalty',    text: "Mois 6 d'abonnement ! Jamais déçu 🎉",                  badges: [{ type: 'subscriber' }],  color: '#9147FF'  },
-    { displayName: 'NewSubscriber', username: 'newsubscriber', text: 'Je viens de m\'abonner, super content !',                badges: [{ type: 'subscriber' }],  color: '#7B2FBE'  },
+    { displayName: 'SubLoyalty',   username: 'subloyalty',   text: 'Month 6 of my sub! Never disappointed 🎉',  badges: [{ type: 'subscriber' }],  color: '#9147FF' },
+    { displayName: 'NewSub',       username: 'newsub',       text: 'Just subscribed, so happy!',                badges: [{ type: 'subscriber' }],  color: '#7B2FBE' },
   ],
   vip: [
-    { displayName: 'VIP_Legend',    username: 'vip_legend',    text: "J'adore ce stream, vous êtes les meilleurs ! 💎",       badges: [{ type: 'vip' }],         color: '#E91E8C'  },
+    { displayName: 'VIP_Legend',   username: 'vip_legend',   text: 'Love this stream, you are the best! 💎',    badges: [{ type: 'vip' }],         color: '#E91E8C' },
   ],
   broadcaster: [
-    { displayName: 'LeStreamer',     username: 'lestreamer',    text: 'Merci à tous pour votre soutien ! ❤️',                   badges: [{ type: 'broadcaster' }], color: '#FFD700'  },
+    { displayName: 'TheStreamer',  username: 'thestreamer',  text: 'Thanks everyone for the support! ❤️',       badges: [{ type: 'broadcaster' }], color: '#FFD700' },
   ],
   long: [
-    { displayName: 'LongTalker',    username: 'longtalker',    text: "Sérieusement ce jeu est absolument incroyable, j'ai passé les 3 dernières heures dessus et je n'arrive pas à m'arrêter ! La map est immense et il y a tellement de secrets à découvrir.",
-      badges: [], color: '#FF9A3C' },
+    { displayName: 'LongTalker',   username: 'longtalker',   text: "Seriously this game is absolutely incredible, I've spent the last 3 hours on it and I can't stop! The map is huge and there are so many secrets to find.", badges: [], color: '#FF9A3C' },
   ],
 };
 
-function sendTestSub() {
-  sendTest('sub');
-  simSub(1);
-}
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 function sendTest(type) {
-  const w = win();
-  if (!w || typeof w.addMessage !== 'function') {
-    showToast('Widget pas encore prêt…');
-    return;
-  }
-  const pool = TEST_POOL[type] || TEST_POOL.normal;
-  const msg  = pool[Math.floor(Math.random() * pool.length)];
-  w.addMessage(msg);
+  send({ type: 'cmd:message', data: { ...pick(TEST_POOL[type] || TEST_POOL.normal) } });
 }
 
 function sendBurst() {
-  const all      = Object.values(TEST_POOL).flat();
-  const shuffled = [...all].sort(() => Math.random() - .5).slice(0, 5);
-  shuffled.forEach((msg, i) => {
-    setTimeout(() => {
-      const w = win();
-      if (w && typeof w.addMessage === 'function') w.addMessage(msg);
-    }, i * 600);
-  });
+  const all = Object.values(TEST_POOL).flat().sort(() => Math.random() - .5).slice(0, 5);
+  all.forEach((m, i) => setTimeout(() => send({ type: 'cmd:message', data: { ...m } }), i * 600));
 }
 
-// ── Copy URL ─────────────────────────────────────────
+const EVENTS = {
+  follow: () => ({ listener: 'follower-latest',   event: { name: pick(['NewFollower', 'Emma', 'Ryan']) } }),
+  sub:    () => ({ listener: 'subscriber-latest', event: { name: pick(['SubHero', 'Lily']), amount: 1 } }),
+  gift:   () => ({ listener: 'subscriber-latest', event: { name: 'GiftKing', amount: 5, bulkGifted: true } }),
+  bits:   () => ({ listener: 'cheer-latest',      event: { name: 'Chris', amount: 500, message: 'PogChamp' } }),
+  tip:    () => ({ listener: 'tip-latest',        event: { name: 'Alex', amount: 10, message: 'Great stream!' } }),
+  raid:   () => ({ listener: 'raid-latest',       event: { name: 'RaidLeader', amount: 50 } }),
+};
+
+function sendEvent(kind) {
+  send({ type: 'cmd:event', ...EVENTS[kind]() });
+}
+
+let goalPreview = 0;
+function bumpGoal(n) {
+  goalPreview = (+document.getElementById('ctrl-goal-current').value || 0) + n;
+  document.getElementById('ctrl-goal-current').value = goalPreview;
+  send({ type: 'cmd:goal', value: goalPreview });
+  updateWidgetUrl();
+}
+function resetGoal() {
+  document.getElementById('ctrl-goal-current').value = 0;
+  send({ type: 'cmd:goal', value: 0 });
+  updateWidgetUrl();
+}
+
+// =====================================================
+//   OBS link: widget URL + channel + every setting that differs from the defaults
+// =====================================================
+
+function widgetBaseUrl() {
+  const here = window.location.href.split(/[?#]/)[0].replace(/index\.html$/, '');
+  return (here.endsWith('/') ? here : here + '/') + 'widget/index.html';
+}
+
+function updateWidgetUrl() {
+  const params = new URLSearchParams();
+  const ch = channelValue();
+  if (ch) params.set('channel', ch);
+  const cfg = currentConfig();
+  Object.keys(cfg).forEach(k => { if (cfg[k] !== INITIAL[k]) params.set(k, String(cfg[k])); });
+  const qs = params.toString();
+  document.getElementById('widget-url-display').textContent = widgetBaseUrl() + (qs ? `?${qs}` : '');
+}
 
 function copyUrl() {
   const url = document.getElementById('widget-url-display').textContent;
-  navigator.clipboard.writeText(url).then(() => {
+  const done = () => {
     const btn = document.getElementById('copy-btn');
     btn.classList.add('copied');
-    btn.textContent = '✓ Copié !';
-    setTimeout(() => {
-      btn.classList.remove('copied');
-      btn.textContent = '📋 Copier l\'URL';
-    }, 2000);
-    showToast('URL copiée dans le presse-papier !');
-  });
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { btn.classList.remove('copied'); btn.textContent = '📋 Copy the OBS link'; }, 2000);
+    showToast(channelValue() ? 'OBS link copied!' : 'Copied — tip: add your channel first');
+  };
+  if (navigator.clipboard?.writeText) navigator.clipboard.writeText(url).then(done, () => fallbackCopy(url, done));
+  else fallbackCopy(url, done);
 }
 
-// ── Toast ────────────────────────────────────────────
+function fallbackCopy(text, done) {
+  const ta = document.createElement('textarea');
+  ta.value = text; document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); done(); } catch (_) { showToast('Select the link and copy it manually'); }
+  ta.remove();
+}
 
 let toastTimer;
 function showToast(msg) {
@@ -1395,34 +1346,26 @@ function showToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-// ── Widget URL ───────────────────────────────────────
-
-function updateWidgetUrl() {
-  const base = window.location.origin + window.location.pathname.replace(/\/?$/, '');
-  const url  = base.endsWith('/') ? base + 'widget/' : base + '/widget/';
-  document.getElementById('widget-url-display').textContent = url;
-}
-
+refreshRangeLabels();
+resizePreview();
 updateWidgetUrl();
+document.getElementById('goal-settings').style.display = 'none';
 
-// ── Stream timer ─────────────────────────────────────
+// =====================================================
+//   Decorative stream preview
+// =====================================================
 
 const startTime = Date.now();
 setInterval(() => {
-  const elapsed = Math.floor((Date.now() - startTime) / 1000);
-  const h = String(Math.floor(elapsed / 3600)).padStart(2, '0');
-  const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
-  const s = String(elapsed % 60).padStart(2, '0');
-  document.getElementById('stream-timer').textContent = `${h}:${m}:${s}`;
+  const s = Math.floor((Date.now() - startTime) / 1000);
+  const pad = (n) => String(n).padStart(2, '0');
+  document.getElementById('stream-timer').textContent = `${pad(Math.floor(s / 3600))}:${pad(Math.floor((s % 3600) / 60))}:${pad(s % 60)}`;
 }, 1000);
-
-// ── Viewer count animation ───────────────────────────
 
 let viewers = 1234;
 setInterval(() => {
-  viewers += Math.floor(Math.random() * 7) - 3;
-  viewers = Math.max(800, viewers);
-  document.getElementById('viewer-count').textContent = viewers.toLocaleString('fr-FR');
+  viewers = Math.max(800, viewers + Math.floor(Math.random() * 7) - 3);
+  document.getElementById('viewer-count').textContent = viewers.toLocaleString('en-US');
 }, 5000);
 </script>
 

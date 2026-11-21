@@ -1,90 +1,213 @@
 {
   "twitchChannel": {
     "type": "text",
-    "label": "Canal Twitch (connexion directe, laisser vide si StreamElements)",
+    "label": "Twitch channel — direct connection (leave empty on StreamElements)",
     "value": ""
   },
   "streamName": {
     "type": "text",
-    "label": "Nom affiché dans la barre de titre terminal",
-    "value": "Chat Twitch"
+    "label": "Name shown in the terminal title bar",
+    "value": "Twitch Chat"
   },
   "theme": {
     "type": "dropdown",
-    "label": "Thème",
+    "label": "Theme",
     "value": "dark",
-    "options": [
-      { "value": "dark",  "label": "🖥️ Sombre (terminal classique)" },
-      { "value": "light", "label": "☀️ Clair" }
-    ]
+    "options": {
+      "dark": "Dark (classic terminal)",
+      "light": "Light",
+      "amoled": "AMOLED (pure black)"
+    }
+  },
+  "accentColor": {
+    "type": "colorpicker",
+    "label": "Accent color",
+    "value": "#00ff41"
   },
   "fontSize": {
     "type": "slider",
-    "label": "Taille du texte",
+    "label": "Text size (px)",
     "value": 14,
-    "min": 11,
-    "max": 20,
-    "steps": 1
+    "min": 10,
+    "max": 28,
+    "step": 1
   },
-  "maxMessages": {
+  "chatWidth": {
     "type": "slider",
-    "label": "Messages maximum",
-    "value": 15,
-    "min": 5,
-    "max": 30,
-    "steps": 1
+    "label": "Chat width (%)",
+    "value": 100,
+    "min": 30,
+    "max": 100,
+    "step": 5
   },
-  "messageDuration": {
+  "alignment": {
+    "type": "dropdown",
+    "label": "Alignment",
+    "value": "left",
+    "options": {
+      "left": "Left",
+      "right": "Right",
+      "center": "Center"
+    }
+  },
+  "perspectiveX": {
     "type": "slider",
-    "label": "Durée d'affichage en secondes (0 = permanent)",
+    "label": "3D Rotation — X axis (up/down)",
     "value": 0,
-    "min": 0,
-    "max": 120,
-    "steps": 5
+    "min": -45,
+    "max": 45,
+    "step": 1
+  },
+  "perspectiveY": {
+    "type": "slider",
+    "label": "3D Rotation — Y axis (left/right)",
+    "value": 0,
+    "min": -45,
+    "max": 45,
+    "step": 1
+  },
+  "messageAnimation": {
+    "type": "dropdown",
+    "label": "Entry animation",
+    "value": "type",
+    "options": {
+      "type": "Typewriter",
+      "slide": "Slide",
+      "fade": "Fade",
+      "none": "None"
+    }
   },
   "showHeader": {
     "type": "checkbox",
-    "label": "Barre de titre terminal",
+    "label": "Terminal title bar",
     "value": true
   },
   "showInputBar": {
     "type": "checkbox",
-    "label": "Barre de prompt (décorative)",
+    "label": "Prompt bar (decorative)",
+    "value": true
+  },
+  "maxMessages": {
+    "type": "slider",
+    "label": "Maximum number of messages",
+    "value": 15,
+    "min": 3,
+    "max": 30,
+    "step": 1
+  },
+  "messageDuration": {
+    "type": "slider",
+    "label": "Message lifetime in seconds (0 = forever)",
+    "value": 0,
+    "min": 0,
+    "max": 120,
+    "step": 5
+  },
+  "showTimestamp": {
+    "type": "checkbox",
+    "label": "Show timestamps",
     "value": true
   },
   "showBadges": {
     "type": "checkbox",
-    "label": "Badges (mod, sub, VIP…)",
+    "label": "Show role badges",
     "value": true
   },
-  "showTimestamp": {
-    "type": "checkbox",
-    "label": "Horodatage",
-    "value": true
+  "badgeStyle": {
+    "type": "dropdown",
+    "label": "Badge style",
+    "value": "text",
+    "options": {
+      "text": "Terminal tags [MOD] [VIP] [SUB]",
+      "icon": "Icons"
+    }
   },
-  "subGoalEnabled": {
+  "showAvatars": {
     "type": "checkbox",
-    "label": "Activer l'objectif d'abonnements",
+    "label": "Show avatars",
     "value": false
   },
-  "subGoalLabel": {
-    "type": "text",
-    "label": "Titre de l'objectif",
-    "value": "Objectif abonnements"
+  "modColor": {
+    "type": "colorpicker",
+    "label": "Moderator color",
+    "value": "#00ff88"
   },
-  "subGoalDesc": {
+  "vipColor": {
+    "type": "colorpicker",
+    "label": "VIP color",
+    "value": "#e91e8c"
+  },
+  "subColor": {
+    "type": "colorpicker",
+    "label": "Subscriber color",
+    "value": "#ffc200"
+  },
+  "showAlerts": {
+    "type": "checkbox",
+    "label": "── ALERTS ── Show alert pop-ups",
+    "value": true
+  },
+  "alertDuration": {
+    "type": "slider",
+    "label": "Alert duration (seconds)",
+    "value": 5,
+    "min": 2,
+    "max": 15,
+    "step": 1
+  },
+  "showGoal": {
+    "type": "checkbox",
+    "label": "── GOAL BAR ── Show goal bar",
+    "value": false
+  },
+  "goalType": {
+    "type": "dropdown",
+    "label": "Goal — Objective type",
+    "value": "subs",
+    "options": {
+      "followers": "Followers",
+      "subs": "Subscribers",
+      "bits": "Bits",
+      "donations": "Donations (€)"
+    }
+  },
+  "goalTitle": {
     "type": "text",
-    "label": "Description (ex : Facecam à 100 subs !)",
+    "label": "Goal — Display title",
+    "value": "Sub goal"
+  },
+  "goalDesc": {
+    "type": "text",
+    "label": "Goal — Description (e.g. Facecam at 100 subs!)",
     "value": ""
   },
-  "subGoalCurrent": {
+  "goalCurrent": {
     "type": "number",
-    "label": "Abonnements actuels",
+    "label": "Goal — Starting value",
     "value": 0
   },
-  "subGoalTarget": {
+  "goalTarget": {
     "type": "number",
-    "label": "Objectif cible",
+    "label": "Goal — Target value",
     "value": 100
+  },
+  "goalOrientation": {
+    "type": "dropdown",
+    "label": "Goal — Bar orientation",
+    "value": "horizontal",
+    "options": {
+      "horizontal": "Horizontal (top of the terminal)",
+      "vertical": "Vertical (right side)"
+    }
+  },
+  "goalColor": {
+    "type": "colorpicker",
+    "label": "Goal — Bar color",
+    "value": "#00ff41"
+  },
+  "goalAutoTrack": {
+    "type": "checkbox",
+    "label": "Goal — Auto-count stream events",
+    "value": true
   }
 }
