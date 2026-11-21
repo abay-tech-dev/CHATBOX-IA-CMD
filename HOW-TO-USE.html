@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terminal Chat — Setup guide · VANTRA STUDIO</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--acc:#00ff41;--coral:#ff6b5b;--indigo:#5b4bff;--bg:#0b0a16;--card:#14132a;--line:#2a2850;--text:#eceaff;--muted:#a3a0c8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',system-ui,sans-serif;font-size:18px;line-height:1.6}
+a{color:var(--acc)}
+.bar{position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:14px 28px;background:rgba(11,10,22,.92);backdrop-filter:blur(8px);border-bottom:3px solid transparent;border-image:linear-gradient(90deg,var(--indigo),var(--coral)) 1}
+.brand{font-weight:700;letter-spacing:6px}.brand span{color:var(--coral);margin:0 10px}.brand em{font-style:normal;letter-spacing:1px;font-weight:500;color:#d9d4ff}
+.bar nav a{color:var(--muted);text-decoration:none;margin-left:18px;font-size:15px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px 80px}
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center;padding:48px 0 24px}
+.hero h1{font-size:52px;line-height:1.05}.hero h1 b{color:var(--acc)}
+.hero p{color:var(--muted);font-size:20px;margin-top:12px}
+.pill{display:inline-block;margin-top:18px;padding:6px 14px;border-radius:999px;border:2px solid var(--acc);color:var(--acc);font-weight:700;font-size:14px;letter-spacing:2px}
+.preview{height:520px;border-radius:18px;overflow:hidden;border:2px solid var(--line);background:#05050c}
+.preview iframe{width:100%;height:100%;border:0;}
+h2{font-size:32px;margin:56px 0 8px;display:flex;align-items:center;gap:14px}
+h2 .n{display:inline-flex;width:44px;height:44px;border-radius:12px;background:var(--acc);color:#0b0a16;align-items:center;justify-content:center;font-size:24px}
+h3{font-size:22px;margin:26px 0 8px;color:var(--acc)}
+.lead{color:var(--muted)}
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:22px 26px;margin-top:16px}
+.tree{font-family:'JetBrains Mono',monospace;font-size:16px;line-height:1.9;white-space:pre}
+.tree b{color:var(--acc)}.tree i{font-style:normal;font-family:'Space Grotesk';color:var(--muted);margin-left:18px;font-size:15px}
+ol.steps{counter-reset:s;list-style:none;margin-top:12px}
+ol.steps>li{counter-increment:s;position:relative;padding:14px 0 14px 58px;border-bottom:1px dashed var(--line)}
+ol.steps>li::before{content:counter(s);position:absolute;left:0;top:12px;width:40px;height:40px;border-radius:50%;border:2px solid var(--acc);color:var(--acc);font-weight:700;display:flex;align-items:center;justify-content:center}
+kbd{font-family:'JetBrains Mono';background:#fff;color:#111;border-radius:6px;padding:1px 8px;box-shadow:0 3px 0 #999;font-size:15px;font-weight:700}
+code{font-family:'JetBrains Mono';background:#1f1d3d;border-radius:6px;padding:1px 7px;font-size:15px;color:#fff}
+.tip{margin-top:14px;padding:14px 18px;border-left:4px solid var(--coral);background:rgba(255,107,91,.08);border-radius:8px}
+.tip b{color:var(--coral)}
+.methods{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px}
+.method{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:22px}
+.method.best{border-color:var(--acc)}
+.method h4{font-size:22px}.method ul{margin:10px 0 0 20px;color:var(--muted)}
+.copy{margin-top:16px;background:var(--card);border:2px solid var(--line);border-radius:16px;overflow:hidden}
+.copy-head{display:flex;align-items:center;gap:14px;padding:14px 18px}
+.copy-head div{flex:1}.acc{color:var(--acc)}
+.num{display:inline-flex;width:34px;height:34px;border-radius:50%;background:var(--acc);color:#0b0a16;font-weight:700;align-items:center;justify-content:center;flex-shrink:0}
+.copy button{font:inherit;font-weight:700;padding:9px 18px;border-radius:10px;border:0;background:var(--acc);color:#0b0a16;cursor:pointer}
+.copy button.done{background:#fff}
+.copy textarea{width:100%;height:110px;border:0;border-top:2px solid var(--line);background:#0e0d1f;color:#c9c6f0;font-family:'JetBrains Mono';font-size:12px;padding:12px 18px;resize:vertical}
+table{width:100%;border-collapse:collapse;margin-top:14px}
+td,th{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:500}
+details{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:14px 20px;margin-top:12px}
+summary{cursor:pointer;font-weight:700}
+details p{margin-top:8px;color:var(--muted)}
+.foot{margin-top:60px;padding:28px;border-radius:18px;background:linear-gradient(120deg,rgba(91,75,255,.25),rgba(255,107,91,.2));text-align:center}
+@media (max-width:820px){.hero,.methods{grid-template-columns:1fr}.hero h1{font-size:38px}.tree{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="bar"><div class="brand">VANTRA STUDIO<span>·</span><em>Terminal Chat</em></div>
+<nav><a href="#folder">Files</a><a href="#obs">OBS</a><a href="#se">StreamElements</a><a href="#help">Help</a></nav></div>
+
+<div class="wrap">
+<div class="hero">
+  <div>
+    <h1>Terminal Chat<br><b>setup guide</b></h1>
+    <p>Never installed a widget before? Perfect, this guide is for you. Follow it step by step: it takes about 5 minutes and you don't need to know any code.</p>
+    <span class="pill">BEGINNER FRIENDLY · ~5 MIN</span>
+    <p style="margin-top:16px">Prefer a video? Open <a href="HOW-TO-USE.mp4"><b>HOW-TO-USE.mp4</b></a> in the same folder: it shows every step, including the StreamElements copy-pastes.</p>
+  </div>
+  <div class="preview"><iframe src="widget/index.html?demo=1" title="Live preview"></iframe></div>
+</div>
+
+<h2 id="folder"><span class="n">1</span>Unzip the file</h2>
+<p class="lead">On Etsy, go to <b>You › Purchases</b> and download the ZIP. Then right-click it › <b>Extract all</b>. Keep every file together in the same folder, and don't rename anything.</p>
+<div class="card tree"><div><b>Terminal-Chat/</b><i>the folder you get after unzipping</i></div><div><b>├── index.html</b><i>the configurator: double-click it first</i></div><div><b>├── README.md</b><i>quick notes</i></div><div><b>├── HOW-TO-USE.html</b><i>this guide</i></div><div><b>├── HOW-TO-USE.mp4</b><i>the same guide, as a video</i></div><div><b>├── widget/</b><i>the chat itself (used by the OBS link)</i></div><div><b>└── streamelements/</b><i>the 4 files for StreamElements</i></div><div><b>    ├── se-html.txt</b><i>paste into the HTML tab</i></div><div><b>    ├── se-css.txt</b><i>paste into the CSS tab</i></div><div><b>    ├── se-js.txt</b><i>paste into the JS tab</i></div><div><b>    └── se-fields.txt</b><i>paste into the FIELDS tab</i></div></div>
+<div class="tip"><b>Tip:</b> put this folder somewhere you won't delete by mistake, like <code>Documents</code>. The OBS link points to these files: if you move the folder later, copy the link again.</div>
+
+<h2><span class="n">2</span>Choose how you want to use it</h2>
+<div class="methods">
+
+  <div class="method best"><h4>A · OBS only (easiest)</h4><ul><li>No account needed</li><li>Shows chat, subs, gift subs, bits and raids</li><li>Doesn't show follows and donations</li></ul></div>
+  <div class="method"><h4>B · StreamElements</h4><ul><li>Free StreamElements account</li><li>Shows <b>everything</b>, follows and donations included</li><li>4 copy-pastes, once</li></ul></div>
+</div>
+
+
+<h2 id="obs"><span class="n">A</span>OBS only, no account</h2>
+<ol class="steps">
+  <li>Double-click <code>index.html</code>. It opens in your web browser: this is the <b>configurator</b>.</li>
+  <li>At the top, type your <b>Twitch channel name</b> (just the name, like <code>your_channel</code>) and click <b>Connect</b>. When people talk in your chat, the messages appear in the preview.</li>
+  <li>Change the look with the options on the left: colors, text size, alerts, goal bar… Use the test buttons to see alerts.</li>
+  <li>Click <b>Copy the OBS link</b>. Your channel and all your settings are inside this link.</li>
+  <li>Open <b>OBS Studio</b>. In the <b>Sources</b> box, click <b>+</b> › <b>Browser</b> › give it a name › <b>OK</b>.</li>
+  <li>In <b>URL</b>, delete what's there and paste your link with <kbd>Ctrl</kbd> + <kbd>V</kbd>. Set the <b>Width</b> and <b>Height</b> shown in the configurator, then click <b>OK</b>.</li>
+  <li>Drag and resize the chat on your scene. You're live!</li>
+</ol>
+
+
+<h2 id="se"><span class="n">B</span>StreamElements: the 4 copy-pastes</h2>
+<ol class="steps"><li>Go to streamelements.com and log in with your Twitch account.</li><li>Open Streaming tools &gt; Overlays &gt; New overlay (choose 1920 x 1080).</li><li>Click the + button (Add widget) &gt; Static / Custom &gt; Custom widget.</li><li>Select the new widget, then click "Open editor" in the left panel.</li>
+  <li>You now see tabs: <b>HTML</b>, <b>CSS</b>, <b>JS</b>, <b>FIELDS</b>, <b>DATA</b>. For each of the 4 files below: click the tab, select everything already inside (<kbd>Ctrl</kbd> + <kbd>A</kbd>), then paste (<kbd>Ctrl</kbd> + <kbd>V</kbd>). Leave the <b>DATA</b> tab as it is.</li>
+  <li>Click <b>Done</b>, then <b>Save</b> (top right). The settings of the chat appear in the left panel.</li>
+  
+  <li>Resize the widget box where you want the chat on your overlay.</li>
+  <li>Copy your overlay URL (link button at the top), then in OBS: <b>+</b> › <b>Browser</b> › paste it › <b>1920 x 1080</b>.</li>
+</ol>
+<p class="lead" style="margin-top:18px">Easiest way: use the buttons below. Each one copies a whole file for you, so you only have to paste. You can also open the files in <code>streamelements/</code> with Notepad.</p>
+
+      <div class="copy">
+        <div class="copy-head"><span class="num">1</span><div><b>streamelements/se-html.txt</b> → paste into the <b class="acc">HTML</b> tab</div>
+          <button onclick="copyCode(0, this)">Copy HTML</button></div>
+        <textarea id="code0" readonly>&lt;div id="stage"&gt;
+  &lt;div id="widget-container"&gt;
+
+    &lt;!-- Terminal title bar --&gt;
+    &lt;div id="wa-header"&gt;
+      &lt;div class="terminal-dots"&gt;
+        &lt;div class="terminal-dot dot-red"&gt;&lt;/div&gt;
+        &lt;div class="terminal-dot dot-yellow"&gt;&lt;/div&gt;
+        &lt;div class="terminal-dot dot-green"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="terminal-title" id="contact-name"&gt;twitch-chat — bash&lt;/div&gt;
+      &lt;div class="wa-online-dot conn-disconnected" id="connection-dot" title="Not connected"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Goal — horizontal (top of the terminal) --&gt;
+    &lt;div id="goal-h" class="goal" style="display:none"&gt;
+      &lt;div class="goal-header-line"&gt;
+        &lt;span class="goal-prefix"&gt;[GOAL]&lt;/span&gt;
+        &lt;span class="goal-label-text"&gt;Sub goal&lt;/span&gt;
+        &lt;span class="goal-fraction-text"&gt;0 / 100&lt;/span&gt;
+        &lt;span class="goal-pct-text"&gt;0%&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="goal-bar-line"&gt;
+        &lt;span&gt;[&lt;/span&gt;
+        &lt;span class="goal-bar-wrap" id="goal-bar-wrap"&gt;&lt;span class="goal-bar-ascii" id="goal-bar-ascii"&gt;&lt;/span&gt;&lt;/span&gt;
+        &lt;span&gt;]&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="goal-desc-line" id="goal-desc" style="display:none"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div id="terminal-body"&gt;
+      &lt;!-- Messages --&gt;
+      &lt;div id="messages-container"&gt;
+        &lt;div id="messages-list"&gt;&lt;/div&gt;
+        &lt;div id="alert-layer"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Goal — vertical (right side of the terminal) --&gt;
+      &lt;div id="goal-v" class="goal" style="display:none"&gt;
+        &lt;span class="goal-pct-text"&gt;0%&lt;/span&gt;
+        &lt;pre class="goal-v-bar" id="goal-v-bar"&gt;&lt;/pre&gt;
+        &lt;span class="goal-label-text goal-v-title"&gt;Sub goal&lt;/span&gt;
+        &lt;span class="goal-v-values"&gt;&lt;span class="goal-current-text"&gt;0&lt;/span&gt;&lt;span class="goal-v-sep"&gt;&lt;/span&gt;&lt;span class="goal-target-text"&gt;100&lt;/span&gt;&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Prompt bar (decorative) --&gt;
+    &lt;div id="wa-input-bar"&gt;
+      &lt;span class="terminal-prompt-label" id="terminal-prompt-label"&gt;user@chat:~$&lt;/span&gt;
+      &lt;span class="terminal-input-fake"&gt;Send a message…&lt;span class="terminal-cursor"&gt;&lt;/span&gt;&lt;/span&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+&lt;/div&gt;
+</textarea>
+      </div>
+      <div class="copy">
+        <div class="copy-head"><span class="num">2</span><div><b>streamelements/se-css.txt</b> → paste into the <b class="acc">CSS</b> tab</div>
+          <button onclick="copyCode(1, this)">Copy CSS</button></div>
+        <textarea id="code1" readonly>/* =====================================================
+   CHATBOX-IA — CMD Widget · style.css
+   ===================================================== */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --font-size:  14px;
+  --accent:     #00ff41;
+  --mod-color:  #00ff88;
+  --vip-color:  #e91e8c;
+  --sub-color:  #ffc200;
+  --goal-color: var(--accent);
+
+  /* Dark terminal (default) */
+  --bg:            #0d1117;
+  --header-bg:     #161b22;
+  --header-border: #30363d;
+  --text:          #c9d1d9;
+  --text-muted:    #8b949e;
+  --system:        #f0883e;
+}
+
+:root[data-theme="light"] {
+  --bg:            #f6f8fa;
+  --header-bg:     #2d333b;
+  --header-border: #444c56;
+  --text:          #1c1e21;
+  --text-muted:    #57606a;
+  --system:        #bc4c00;
+}
+
+:root[data-theme="amoled"] {
+  --bg:            #000000;
+  --header-bg:     #0a0a0a;
+  --header-border: #1f1f1f;
+  --text:          #e6e6e6;
+  --text-muted:    #7a7a7a;
+  --system:        #ff9a3c;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* ── Stage: fills the OBS browser source exactly ── */
+#stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: flex-start;
+}
+:root[data-align="right"]  #stage { justify-content: flex-end; }
+:root[data-align="center"] #stage { justify-content: center; }
+
+/* ── Terminal window ── */
+#widget-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: var(--font-size);
+  overflow: hidden;
+  border: 1px solid var(--header-border);
+  border-radius: 8px;
+  transition: width .3s ease;
+}
+
+/* ── Title bar ── */
+#wa-header {
+  flex-shrink: 0;
+  height: 2.9em;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--header-border);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 8px;
+  user-select: none;
+}
+
+.terminal-dots { display: flex; gap: 6px; flex-shrink: 0; }
+.terminal-dot  { width: .9em; height: .9em; border-radius: 50%; }
+.dot-red    { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green  { background: #27c93f; }
+
+.terminal-title {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  font-size: .95em;
+  color: var(--text-muted);
+  letter-spacing: 0.3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wa-online-dot {
+  width: .65em;
+  height: .65em;
+  border-radius: 50%;
+  background: #8b949e;
+  flex-shrink: 0;
+  transition: background .3s;
+}
+.wa-online-dot.conn-connected    { background: var(--accent); box-shadow: 0 0 5px var(--accent); }
+.wa-online-dot.conn-connecting   { background: #ffbd2e; animation: dotPulse .9s ease-in-out infinite; }
+.wa-online-dot.conn-error        { background: #ff5f56; animation: dotPulse .9s ease-in-out infinite; }
+.wa-online-dot.conn-disconnected { background: #8b949e; }
+
+@keyframes dotPulse { 0%, 100% { opacity: 1; } 50% { opacity: .2; } }
+
+/* =====================================================
+   Goal
+   ===================================================== */
+
+.goal { font-family: 'Courier New', monospace; }
+.goal.goal-complete { --goal-color: #ffd700; }
+.goal.goal-pulse { animation: goalPulse .45s ease; }
+
+@keyframes goalPulse {
+  0%, 100% { background: var(--header-bg); }
+  50%      { background: color-mix(in srgb, var(--goal-color) 14%, var(--header-bg)); }
+}
+
+/* Horizontal: under the title bar */
+#goal-h {
+  flex-shrink: 0;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--header-border);
+  padding: .5em .75em;
+  font-size: 1.05em;
+}
+
+.goal-header-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+  min-width: 0;
+}
+
+.goal-prefix       { color: var(--goal-color); font-weight: 700; flex-shrink: 0; }
+.goal-label-text   { color: var(--text); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.goal-fraction-text{ color: var(--goal-color); font-weight: 700; flex-shrink: 0; white-space: nowrap; }
+.goal-pct-text     { color: var(--text-muted); flex-shrink: 0; white-space: nowrap; }
+
+.goal-bar-line {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+/* The script fits the number of █/░ characters to this box, so it never overflows */
+.goal-bar-wrap {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+  white-space: pre;
+}
+
+.goal-bar-ascii {
+  color: var(--goal-color);
+  white-space: pre;
+  text-shadow: 0 0 6px color-mix(in srgb, var(--goal-color) 45%, transparent);
+}
+
+.goal-desc-line {
+  font-size: .85em;
+  color: var(--text-muted);
+  margin-top: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Vertical: column on the right of the messages */
+#terminal-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+#goal-v {
+  flex-shrink: 0;
+  width: 4.4em;
+  background: var(--header-bg);
+  border-left: 1px solid var(--header-border);
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: .95em;
+  overflow: hidden;
+}
+
+#goal-v .goal-pct-text { color: var(--goal-color); font-weight: 700; }
+
+.goal-v-bar {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  font-family: inherit;
+  font-size: .95em;
+  line-height: 1;
+  text-align: center;
+  color: var(--goal-color);
+  text-shadow: 0 0 6px color-mix(in srgb, var(--goal-color) 45%, transparent);
+}
+
+.goal-v-title {
+  flex: 0 0 auto;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  max-height: 40%;
+  font-size: .85em;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.goal-v-values {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.15;
+  font-size: .9em;
+  color: var(--goal-color);
+  font-weight: 700;
+}
+.goal-v-sep { width: 14px; height: 1px; background: var(--text-muted); margin: 2px 0; }
+
+/* =====================================================
+   Messages
+   ===================================================== */
+
+#messages-container {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+#messages-list {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  scrollbar-width: none;
+}
+#messages-list::-webkit-scrollbar { display: none; }
+
+/* Messages start at the bottom, like a real terminal filling up */
+#messages-list &gt; :first-child { margin-top: auto; }
+
+.message-wrapper.removing {
+  animation: msgOut .3s ease forwards;
+}
+@keyframes msgOut { to { opacity: 0; transform: translateX(-10px); } }
+
+/* Entry animations */
+:root[data-animation="slide"] .message-wrapper:not(.removing) { animation: msgSlide .2s ease both; }
+:root[data-animation="fade"]  .message-wrapper:not(.removing) { animation: msgFade .35s ease both; }
+:root[data-animation="type"]  .message-wrapper:not(.removing) { animation: msgType .45s steps(18, end) both; }
+
+@keyframes msgSlide { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+@keyframes msgFade  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes msgType  { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+/* One terminal line — plain text flow, so long messages wrap back to the start of the line */
+.message-line {
+  display: block;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+:root[data-align="right"]  .message-line,
+:root[data-align="right"]  .system-chip  { text-align: right; }
+:root[data-align="center"] .message-line,
+:root[data-align="center"] .system-chip  { text-align: center; }
+
+.message-time {
+  color: var(--text-muted);
+  font-size: .8em;
+  margin-right: 5px;
+}
+
+.message-avatar {
+  position: relative;
+  display: inline-block;
+  vertical-align: -0.2em;
+  width: 1.15em;
+  height: 1.15em;
+  margin-right: 5px;
+  border: 1px solid var(--av);
+  color: var(--av);
+  font-size: .85em;
+  font-weight: 700;
+  line-height: 1.1em;
+  text-align: center;
+  overflow: hidden;
+}
+.message-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.message-badges {
+  display: inline-flex;
+  gap: 3px;
+  margin-right: 5px;
+  align-items: center;
+  vertical-align: baseline;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .8em;
+  line-height: 1;
+}
+.badge img { width: 14px; height: 14px; }
+.badge-text { font-weight: 700; letter-spacing: .3px; }
+
+.message-username {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.message-separator {
+  color: var(--text-muted);
+  margin: 0 5px;
+}
+
+.message-text {
+  color: var(--text);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.emote {
+  display: inline-block;
+  height: calc(var(--font-size) * 1.4);
+  width: auto;
+  vertical-align: middle;
+}
+
+.mention { color: var(--accent); font-weight: 700; }
+
+/* System lines ([SYS] …) */
+.system-chip {
+  padding: 1px 0;
+  font-size: .85em;
+  color: var(--system);
+  font-style: italic;
+}
+.system-chip::before {
+  content: '[SYS] ';
+  color: var(--accent);
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* =====================================================
+   Alerts — terminal pop-up window
+   ===================================================== */
+
+#alert-layer {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.alert-box {
+  --al: var(--accent);
+  background: var(--header-bg);
+  border: 1px solid var(--al);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.4), 0 0 14px color-mix(in srgb, var(--al) 35%, transparent), 0 10px 30px rgba(0,0,0,.55);
+  font-size: calc(var(--font-size) * .95);
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity .25s ease, transform .25s ease;
+}
+.alert-box.visible { opacity: 1; transform: none; }
+.alert-box.hiding  { opacity: 0; transform: translateY(-6px); }
+
+.alert-follow   { --al: var(--accent); }
+.alert-sub      { --al: var(--sub-color); }
+.alert-giftsub  { --al: var(--vip-color); }
+.alert-bits     { --al: #b06cff; }
+.alert-donation { --al: #3fb950; }
+.alert-raid     { --al: #ff5f56; }
+.alert-host     { --al: #ff9a3c; }
+
+.alert-titlebar {
+  background: var(--al);
+  color: #000;
+  font-weight: 700;
+  font-size: .8em;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.alert-body {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 10px 9px;
+  color: var(--text);
+}
+.alert-icon { color: var(--al); font-weight: 700; flex-shrink: 0; }
+.alert-msg  { min-width: 0; overflow-wrap: anywhere; }
+
+/* =====================================================
+   Prompt bar (decorative)
+   ===================================================== */
+
+#wa-input-bar {
+  flex-shrink: 0;
+  height: 2.8em;
+  background: var(--header-bg);
+  border-top: 1px solid var(--header-border);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 6px;
+}
+
+.terminal-prompt-label {
+  color: var(--accent);
+  font-size: 1em;
+  font-weight: 700;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.terminal-input-fake {
+  flex: 1;
+  min-width: 0;
+  font-size: 1em;
+  color: var(--text-muted);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: .6em;
+  height: 1em;
+  background: var(--accent);
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+}
+@keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+
+/* ── Confetti when the goal is reached ── */
+.confetti-piece {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  animation: confettiUp .8s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes confettiUp {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-90px) rotate(200deg); opacity: 0; }
+}
+</textarea>
+      </div>
+      <div class="copy">
+        <div class="copy-head"><span class="num">3</span><div><b>streamelements/se-js.txt</b> → paste into the <b class="acc">JS</b> tab</div>
+          <button onclick="copyCode(2, this)">Copy JS</button></div>
+        <textarea id="code2" readonly>// =====================================================
+//   CHATBOX-IA — CMD Widget · script.js
+//   Terminal / Linux themed Twitch chat for StreamElements &amp; OBS
+// =====================================================
+
+const CONFIG = {
+  // Connection
+  twitchChannel:    '',          // direct Twitch connection (leave empty when using StreamElements)
+  streamName:       'Twitch Chat',
+
+  // Look
+  theme:            'dark',      // dark | light | amoled
+  accentColor:      '#00ff41',
+  fontSize:         14,
+  chatWidth:        100,         // % of the browser source width
+  alignment:        'left',      // left | right | center
+  messageAnimation: 'type',      // type | slide | fade | none
+
+  // Terminal chrome
+  showHeader:       true,
+  showInputBar:     true,
+
+  // Messages
+  maxMessages:      15,
+  messageDuration:  0,           // seconds, 0 = never fade out
+  showTimestamp:    true,
+  showBadges:       true,
+  badgeStyle:       'text',      // text ([MOD] [VIP]…) | icon (Twitch icons / emoji)
+  showAvatars:      false,
+  modColor:         '#00ff88',
+  vipColor:         '#e91e8c',
+  subColor:         '#ffc200',
+
+  // Alerts
+  showAlerts:       true,
+  alertDuration:    5,
+  currency:         '$',         // $ | € | £ | auto (your StreamElements account currency)
+
+  // Goal
+  showGoal:         false,
+  goalType:         'subs',      // followers | subs | bits | donations
+  goalTitle:        'Sub goal',
+  goalDesc:         '',
+  goalCurrent:      0,
+  goalTarget:       100,
+  goalOrientation:  'horizontal',// horizontal (top of the terminal) | vertical (right side)
+  goalColor:        '',          // empty = accent color
+  goalAutoTrack:    true,
+};
+
+const DEFAULTS = { ...CONFIG };
+
+const BADGE_META = {
+  broadcaster:  { emoji: '👑', tag: 'LIVE', role: 'broadcaster' },
+  moderator:    { emoji: '⚔️', tag: 'MOD',  role: 'moderator'   },
+  vip:          { emoji: '💎', tag: 'VIP',  role: 'vip'         },
+  subscriber:   { emoji: '⭐', tag: 'SUB',  role: 'subscriber'  },
+  'sub-gifter': { emoji: '🎁', tag: 'GIFT', role: 'subscriber'  },
+  partner:      { emoji: '✅', tag: 'PRT',  role: 'partner'     },
+  premium:      { emoji: '💜', tag: 'PRM',  role: 'partner'     },
+  turbo:        { emoji: '⚡', tag: 'TRB',  role: 'partner'     },
+};
+
+const USERNAME_COLORS = [
+  '#FF6B6B','#FF9A3C','#FFD93D','#6BCB77',
+  '#4D96FF','#C77DFF','#FF69B4','#00B4D8',
+  '#F72585','#43AA8B','#277DA1','#F8961E',
+];
+
+const ALERT_ICONS = { follow: '♥', sub: '★', giftsub: '🎁', bits: '◆', donation: '$', raid: '⚔', host: '📡', goal: '✓' };
+
+let msgCount  = 0;
+let goalValue = 0;
+let seCurrencySymbol = '';   // filled by StreamElements on load (currency of your SE account)
+
+// =====================================================
+//   StreamElements events
+// =====================================================
+
+window.addEventListener('onWidgetLoad', ({ detail }) =&gt; {
+  if (detail?.fieldData) applyFields(detail.fieldData);
+  seCurrencySymbol = detail?.currency?.symbol || '';
+  goalValue = +CONFIG.goalCurrent || 0;
+  applyConfig();
+});
+
+window.addEventListener('onEventReceived', ({ detail }) =&gt; {
+  if (!detail?.listener || !detail?.event) return;
+  const { listener, event } = detail;
+
+  if (listener === 'message')         { addMessage(normalizeSEMessage(event.data)); return; }
+  if (listener === 'delete-message')  { deleteMessage(event.msgId); return; }
+  if (listener === 'delete-messages') { deleteUserMessages(event.userId); return; }
+
+  handleStreamEvent(listener, event);
+});
+
+// SE sends badges/emotes in a slightly different shape than raw IRC
+function normalizeSEMessage(d) {
+  if (!d) return null;
+  return {
+    id:          d.msgId,
+    userId:      d.userId,
+    displayName: d.displayName,
+    username:    d.nick || d.userName || d.displayName,
+    text:        d.text,
+    color:       d.displayColor || d.color,
+    badges:      Array.isArray(d.badges) ? d.badges : parseBadges(String(d.badges || '')),
+    emotes:      Array.isArray(d.emotes) ? d.emotes : parseEmotes(String(d.emotes || ''), d.text || ''),
+    avatar:      d.avatar,
+  };
+}
+
+// Unified handler for follows / subs / bits / tips / raids (SE listener names)
+function handleStreamEvent(listener, ev) {
+  const name   = ev.name || ev.displayName || ev.sender || 'Someone';
+  const amount = +(ev.amount || ev.count || 0);
+  const msg    = ev.message ? ` — "${ev.message}"` : '';
+
+  switch (listener) {
+    case 'follower-latest':
+      trackGoal('followers', 1);
+      fireAlert('follow', 'NEW FOLLOWER', `${name} is now following the channel!`);
+      break;
+
+    case 'subscriber-latest': {
+      if (ev.isCommunityGift) return;                 // one gift of a bulk gift: already counted
+      if (ev.bulkGifted) {
+        trackGoal('subs', amount || 1);
+        fireAlert('giftsub', `${amount} GIFT SUBS`, `${name} gifts ${amount} subs to the community!`);
+      } else if (ev.gifted) {
+        trackGoal('subs', 1);
+        fireAlert('giftsub', 'GIFT SUB', `${ev.sender || 'Someone'} gifted a sub to ${name}!`);
+      } else {
+        const months = +(ev.amount || ev.months || 1);
+        trackGoal('subs', 1);
+        fireAlert('sub', months &gt; 1 ? `${months} MONTHS SUB` : 'NEW SUBSCRIBER',
+          months &gt; 1 ? `${name} has been subscribed for ${months} months!${msg}` : `${name} just subscribed!${msg}`);
+      }
+      break;
+    }
+
+    case 'cheer-latest':
+      trackGoal('bits', amount);
+      fireAlert('bits', `${amount} BITS`, `${name} sent ${amount} bits!${msg}`);
+      break;
+
+    case 'tip-latest':
+      trackGoal('donations', amount);
+      fireAlert('donation', `DONATION ${money(amount)}`, `${name} donated ${money(amount)}!${msg}`);
+      break;
+
+    case 'raid-latest':
+      fireAlert('raid', 'RAID INCOMING', `${name} raids with ${amount} raiders!`);
+      break;
+
+    case 'host-latest':
+      fireAlert('host', 'HOST', `${name} is hosting with ${amount} viewers!`);
+      break;
+  }
+}
+
+// =====================================================
+//   Configuration
+// =====================================================
+
+// Field names from the first CMD version still work
+const LEGACY_KEYS = {
+  subGoalEnabled: 'showGoal',
+  subGoalLabel:   'goalTitle',
+  subGoalDesc:    'goalDesc',
+  subGoalCurrent: 'goalCurrent',
+  subGoalTarget:  'goalTarget',
+  channel:        'twitchChannel',
+};
+
+function coerce(key, value) {
+  const def = DEFAULTS[key];
+  if (typeof def === 'number')  return Number.isFinite(+value) ? +value : def;
+  if (typeof def === 'boolean') return value === true || value === 'true' || value === '1' || value === 1;
+  return value == null ? def : String(value);
+}
+
+function applyFields(f) {
+  Object.keys(f || {}).forEach(raw =&gt; {
+    const key = LEGACY_KEYS[raw] || raw;
+    if (key in DEFAULTS) CONFIG[key] = coerce(key, f[raw]);
+  });
+}
+
+// Every setting can also be passed in the widget URL (that's what the OBS link uses):
+//   widget/?channel=mychannel&amp;theme=amoled&amp;showGoal=true&amp;goalTarget=50 …
+function applyUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  if (![...params.keys()].length) return false;
+  const f = {};
+  params.forEach((v, k) =&gt; { f[k] = v; });
+  applyFields(f);
+  return true;
+}
+
+function applyConfig() {
+  const root = document.documentElement;
+  const term = document.getElementById('widget-container');
+  if (!term) return;
+
+  root.dataset.theme     = CONFIG.theme;
+  root.dataset.animation = CONFIG.messageAnimation;
+  root.dataset.align     = CONFIG.alignment;
+  root.style.setProperty('--font-size',  `${CONFIG.fontSize}px`);
+  root.style.setProperty('--accent',     validHex(CONFIG.accentColor) || DEFAULTS.accentColor);
+  root.style.setProperty('--mod-color',  validHex(CONFIG.modColor)    || DEFAULTS.modColor);
+  root.style.setProperty('--vip-color',  validHex(CONFIG.vipColor)    || DEFAULTS.vipColor);
+  root.style.setProperty('--sub-color',  validHex(CONFIG.subColor)    || DEFAULTS.subColor);
+  root.style.setProperty('--goal-color', validHex(CONFIG.goalColor)   || 'var(--accent)');
+
+  // Size &amp; position of the terminal window
+  term.style.width = `${Math.min(100, Math.max(20, +CONFIG.chatWidth || 100))}%`;
+
+  updateTitle(twitchActiveChannel);
+
+  const promptEl = document.getElementById('terminal-prompt-label');
+  if (promptEl) {
+    const slug = (CONFIG.twitchChannel || CONFIG.streamName || 'chat').toLowerCase().replace(/[^a-z0-9_-]+/g, '-');
+    promptEl.textContent = `${slug}@twitch:~$`;
+  }
+
+  document.getElementById('wa-header').style.display    = CONFIG.showHeader   ? '' : 'none';
+  document.getElementById('wa-input-bar').style.display = CONFIG.showInputBar ? '' : 'none';
+
+  applyGoal();
+
+  if (!IS_SE &amp;&amp; CONFIG.twitchChannel) connectTwitch(CONFIG.twitchChannel);
+}
+
+function updateTitle(connectedChannel) {
+  const titleEl = document.getElementById('contact-name');
+  if (!titleEl) return;
+  const ch = connectedChannel || CONFIG.twitchChannel;
+  const label = ch ? `#${String(ch).replace(/^#/, '')}` : CONFIG.streamName;
+  titleEl.textContent = `${label} — bash — ${window.innerWidth}×${window.innerHeight}`;
+}
+
+window.addEventListener('resize', () =&gt; { updateTitle(twitchActiveChannel); renderGoalBar(); });
+
+// =====================================================
+//   Utilities
+// =====================================================
+
+function escHtml(t) {
+  if (t == null) return '';
+  return String(t).replace(/&amp;/g,'&amp;amp;').replace(/&lt;/g,'&amp;lt;').replace(/&gt;/g,'&amp;gt;').replace(/"/g,'&amp;quot;').replace(/'/g,'&amp;#39;');
+}
+
+function validHex(c) {
+  return typeof c === 'string' &amp;&amp; /^#[0-9a-f]{6}$/i.test(c) ? c : '';
+}
+
+// Donation amounts: "$10.50", "10,50 €", "£10.50"
+function currencySymbol() {
+  return CONFIG.currency === 'auto' ? (seCurrencySymbol || '$') : (CONFIG.currency || '$');
+}
+
+function money(n) {
+  const v = +n || 0;
+  const num = v.toLocaleString('en-US', { minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 });
+  const sym = currencySymbol();
+  return sym === '€' ? `${num.replace('.', ',')} €` : `${sym}${num}`;
+}
+
+function formatTime() {
+  return new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+}
+
+function roleOf(badges) {
+  const types = (badges || []).map(b =&gt; b.type);
+  for (const r of ['broadcaster', 'moderator', 'vip', 'subscriber']) if (types.includes(r)) return r;
+  return 'regular';
+}
+
+function roleColor(role) {
+  return {
+    broadcaster: 'var(--accent)',
+    moderator:   'var(--mod-color)',
+    vip:         'var(--vip-color)',
+    subscriber:  'var(--sub-color)',
+  }[role] || 'var(--text-muted)';
+}
+
+function getUserColor(username, twitchColor) {
+  if (validHex(twitchColor)) return twitchColor;
+  let h = 0;
+  const s = (username || '').toLowerCase();
+  for (let i = 0; i &lt; s.length; i++) h = s.charCodeAt(i) + ((h &lt;&lt; 5) - h);
+  return USERNAME_COLORS[Math.abs(h) % USERNAME_COLORS.length];
+}
+
+// =====================================================
+//   Badges / avatars / text
+// =====================================================
+
+function renderBadges(badges) {
+  if (!CONFIG.showBadges || !badges?.length) return '';
+  return badges.map(b =&gt; {
+    const meta = BADGE_META[b.type];
+    if (!meta) return '';
+    if (CONFIG.badgeStyle === 'icon') {
+      if (b.url) return `&lt;span class="badge" title="${escHtml(b.type)}"&gt;&lt;img src="${escHtml(b.url)}" alt="" /&gt;&lt;/span&gt;`;
+      return `&lt;span class="badge" title="${escHtml(b.type)}"&gt;${meta.emoji}&lt;/span&gt;`;
+    }
+    return `&lt;span class="badge badge-text" style="color:${roleColor(meta.role)}"&gt;[${meta.tag}]&lt;/span&gt;`;
+  }).join('');
+}
+
+function renderAvatar(data, color) {
+  if (!CONFIG.showAvatars) return '';
+  const initial = escHtml((data.displayName || data.username || '?').slice(0, 1).toUpperCase());
+  const img = data.avatar ? `&lt;img src="${escHtml(data.avatar)}" alt="" onerror="this.remove()" /&gt;` : '';
+  return `&lt;span class="message-avatar" style="--av:${color}"&gt;${initial}${img}&lt;/span&gt;`;
+}
+
+function renderText(text, emotes) {
+  if (!text) return '';
+  if (!emotes?.length) return linkMentions(escHtml(text));
+
+  const chars  = [...text];
+  const sorted = [...emotes].sort((a, b) =&gt; (a.start ?? 0) - (b.start ?? 0));
+  const parts  = [];
+  let cursor   = 0;
+
+  for (const em of sorted) {
+    const start = em.start ?? 0;
+    const end   = (em.end ?? em.start) + 1;
+    if (start &lt; cursor) continue;
+    if (start &gt; cursor) parts.push(linkMentions(escHtml(chars.slice(cursor, start).join(''))));
+    const name = chars.slice(start, end).join('');
+    const url  = em.urls?.['1'] || em.urls?.['1x'] || em.url || '';
+    parts.push(url
+      ? `&lt;img class="emote" src="${escHtml(url)}" alt="${escHtml(name)}" title="${escHtml(name)}" loading="lazy" /&gt;`
+      : escHtml(name));
+    cursor = end;
+  }
+  if (cursor &lt; chars.length) parts.push(linkMentions(escHtml(chars.slice(cursor).join(''))));
+  return parts.join('');
+}
+
+function linkMentions(html) {
+  return html.replace(/@(\w+)/g, '&lt;span class="mention"&gt;@$1&lt;/span&gt;');
+}
+
+// =====================================================
+//   Messages
+// =====================================================
+
+function addMessage(data) {
+  if (!data) return;
+  const { displayName, username, text, emotes = [], badges = [], color } = data;
+
+  const list = document.getElementById('messages-list');
+  if (!list) return;
+
+  const role      = roleOf(badges);
+  const userColor = getUserColor(username || displayName, color);
+  const time      = CONFIG.showTimestamp ? formatTime() : '';
+
+  const wrapper = document.createElement('div');
+  wrapper.className  = `message-wrapper role-${role}`;
+  wrapper.dataset.id = data.id || `local-${++msgCount}`;
+  if (data.userId) wrapper.dataset.user = data.userId;
+
+  const badgeHtml = renderBadges(badges);
+  // Joined without whitespace: in a text-flow line every newline would render as an extra space
+  wrapper.innerHTML = '&lt;div class="message-line"&gt;' + [
+    time ? `&lt;span class="message-time"&gt;[${time}]&lt;/span&gt;` : '',
+    renderAvatar(data, userColor),
+    badgeHtml ? `&lt;span class="message-badges"&gt;${badgeHtml}&lt;/span&gt;` : '',
+    `&lt;span class="message-username" style="color:${userColor}"&gt;${escHtml(displayName || username || 'anon')}&lt;/span&gt;`,
+    '&lt;span class="message-separator"&gt;&amp;gt;&lt;/span&gt;',
+    `&lt;span class="message-text"&gt;${renderText(text, emotes)}&lt;/span&gt;`,
+  ].join('') + '&lt;/div&gt;';
+
+  appendLine(wrapper);
+
+  if (CONFIG.messageDuration &gt; 0) {
+    setTimeout(() =&gt; removeMessage(wrapper), CONFIG.messageDuration * 1000);
+  }
+}
+
+function addSystemMessage(text, type = '') {
+  const wrapper = document.createElement('div');
+  wrapper.className = `message-wrapper system-msg${type ? ' sys-' + type : ''}`;
+  wrapper.innerHTML = `&lt;div class="system-chip"&gt;${escHtml(text)}&lt;/div&gt;`;
+  appendLine(wrapper);
+  if (CONFIG.messageDuration &gt; 0) setTimeout(() =&gt; removeMessage(wrapper), CONFIG.messageDuration * 1000);
+}
+
+function appendLine(el) {
+  const list = document.getElementById('messages-list');
+  if (!list) return;
+  list.appendChild(el);
+  list.scrollTop = list.scrollHeight;
+  pruneMessages();
+}
+
+function removeMessage(el) {
+  if (!el || !el.parentNode) return;
+  el.classList.add('removing');
+  setTimeout(() =&gt; el.remove(), 350);
+}
+
+function deleteMessage(id) {
+  if (!id) return;
+  document.querySelectorAll(`.message-wrapper[data-id="${CSS.escape(String(id))}"]`).forEach(removeMessage);
+}
+
+function deleteUserMessages(userId) {
+  if (!userId) return;
+  document.querySelectorAll(`.message-wrapper[data-user="${CSS.escape(String(userId))}"]`).forEach(removeMessage);
+}
+
+function pruneMessages() {
+  const list = document.getElementById('messages-list');
+  if (!list) return;
+  const visible = [...list.querySelectorAll('.message-wrapper:not(.removing)')];
+  const excess  = visible.length - CONFIG.maxMessages;
+  for (let i = 0; i &lt; excess; i++) visible[i].remove();
+}
+
+// =====================================================
+//   Alerts (terminal pop-up window)
+// =====================================================
+
+const alertQueue = [];
+let alertBusy = false;
+
+function fireAlert(type, title, message) {
+  addSystemMessage(`${ALERT_ICONS[type] || '!'} ${message}`, type);
+  if (!CONFIG.showAlerts) return;
+  alertQueue.push({ type, title, message });
+  if (!alertBusy) nextAlert();
+}
+
+function nextAlert() {
+  const item = alertQueue.shift();
+  if (!item) { alertBusy = false; return; }
+  alertBusy = true;
+
+  const layer = document.getElementById('alert-layer');
+  const card  = document.createElement('div');
+  card.className = `alert-box alert-${item.type}`;
+  card.innerHTML = `
+    &lt;div class="alert-titlebar"&gt;&lt;span class="alert-tag"&gt;[ ${escHtml(item.title)} ]&lt;/span&gt;&lt;/div&gt;
+    &lt;div class="alert-body"&gt;&lt;span class="alert-icon"&gt;${ALERT_ICONS[item.type] || '!'}&lt;/span&gt;&lt;span class="alert-msg"&gt;&amp;gt; ${escHtml(item.message)}&lt;span class="terminal-cursor"&gt;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;`;
+  layer.appendChild(card);
+  requestAnimationFrame(() =&gt; requestAnimationFrame(() =&gt; card.classList.add('visible')));
+
+  const duration = Math.max(1, +CONFIG.alertDuration || 5) * 1000;
+  setTimeout(() =&gt; {
+    card.classList.remove('visible');
+    card.classList.add('hiding');
+    setTimeout(() =&gt; { card.remove(); nextAlert(); }, 350);
+  }, duration);
+}
+
+// =====================================================
+//   Goal (ASCII progress bar, horizontal or vertical)
+// =====================================================
+
+const GOAL_UNITS = { followers: 'followers', subs: 'subs', bits: 'bits', donations: '' };
+
+function applyGoal() {
+  const term = document.getElementById('widget-container');
+  const h = document.getElementById('goal-h');
+  const v = document.getElementById('goal-v');
+  const vertical = CONFIG.goalOrientation === 'vertical';
+
+  h.style.display = CONFIG.showGoal &amp;&amp; !vertical ? '' : 'none';
+  v.style.display = CONFIG.showGoal &amp;&amp;  vertical ? '' : 'none';
+  term.classList.toggle('has-goal', !!CONFIG.showGoal);
+  if (!CONFIG.showGoal) return;
+
+  document.querySelectorAll('.goal-label-text').forEach(el =&gt; { el.textContent = CONFIG.goalTitle || 'Goal'; });
+  const descEl = document.getElementById('goal-desc');
+  descEl.textContent   = CONFIG.goalDesc || '';
+  descEl.style.display = CONFIG.goalDesc ? '' : 'none';
+
+  goalValue = Math.max(0, +CONFIG.goalCurrent || 0);
+  // Wait for layout so the bar can be sized to the space it really has
+  requestAnimationFrame(renderGoalBar);
+}
+
+function goalPct() {
+  const target = Math.max(1, +CONFIG.goalTarget || 1);
+  return Math.min(100, Math.max(0, (goalValue / target) * 100));
+}
+
+// Size of one bar character in the goal font, so the ASCII bar always fits exactly
+function charSize(el) {
+  const probe = document.createElement('span');
+  probe.textContent = '█'.repeat(20);
+  probe.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;line-height:1;left:0;top:0;';
+  el.appendChild(probe);
+  const r = probe.getBoundingClientRect();
+  probe.remove();
+  return { w: r.width / 20 || 8, h: r.height || 14 };
+}
+
+function renderGoalBar() {
+  if (!CONFIG.showGoal) return;
+  const pct      = goalPct();
+  const complete = goalValue &gt;= CONFIG.goalTarget;
+  const fmt      = CONFIG.goalType === 'donations' ? money : n =&gt; Math.floor(n).toLocaleString('en-US');
+
+  document.querySelectorAll('.goal-fraction-text').forEach(el =&gt; { el.textContent = `${fmt(goalValue)} / ${fmt(CONFIG.goalTarget)}`; });
+  document.querySelectorAll('.goal-current-text').forEach(el =&gt; { el.textContent = fmt(goalValue); });
+  document.querySelectorAll('.goal-target-text').forEach(el =&gt; { el.textContent = fmt(CONFIG.goalTarget); });
+  document.querySelectorAll('.goal-pct-text').forEach(el =&gt; { el.textContent = `${Math.round(pct)}%`; });
+  document.getElementById('goal-h').classList.toggle('goal-complete', complete);
+  document.getElementById('goal-v').classList.toggle('goal-complete', complete);
+
+  if (CONFIG.goalOrientation === 'vertical') {
+    const wrap = document.getElementById('goal-v-bar');
+    const { h } = charSize(wrap);
+    const rows = Math.max(4, Math.floor(wrap.clientHeight / h));
+    const filled = Math.round((pct / 100) * rows);
+    wrap.textContent = Array.from({ length: rows }, (_, i) =&gt; (rows - i &lt;= filled ? '█' : '░')).join('\n');
+  } else {
+    const box  = document.getElementById('goal-bar-wrap');
+    const { w } = charSize(box);
+    const cols = Math.max(8, Math.floor(box.clientWidth / w));
+    const filled = Math.round((pct / 100) * cols);
+    document.getElementById('goal-bar-ascii').textContent = '█'.repeat(filled) + '░'.repeat(cols - filled);
+  }
+}
+
+function trackGoal(type, amount) {
+  if (!CONFIG.showGoal || !CONFIG.goalAutoTrack || CONFIG.goalType !== type || !(amount &gt; 0)) return;
+  setGoalValue(goalValue + amount, true);
+}
+
+function setGoalValue(value, pulse = false) {
+  const before = goalValue &gt;= CONFIG.goalTarget;
+  goalValue = Math.max(0, +value || 0);
+  CONFIG.goalCurrent = goalValue;
+  renderGoalBar();
+
+  if (pulse) {
+    ['goal-h', 'goal-v'].forEach(id =&gt; {
+      const el = document.getElementById(id);
+      el.classList.remove('goal-pulse'); void el.offsetWidth; el.classList.add('goal-pulse');
+    });
+  }
+
+  if (!before &amp;&amp; goalValue &gt;= CONFIG.goalTarget) {
+    setTimeout(() =&gt; {
+      addSystemMessage(`${ALERT_ICONS.goal} Goal reached! ${CONFIG.goalType === 'donations' ? money(CONFIG.goalTarget) : CONFIG.goalTarget + ' ' + GOAL_UNITS[CONFIG.goalType]}`, 'goal');
+      spawnConfetti();
+    }, 600);
+  }
+}
+
+// Kept for older integrations of the first CMD version
+function updateSubGoal(username, amount = 1, type = 'sub') {
+  handleStreamEvent('subscriber-latest',
+    type === 'giftsub'
+      ? (amount &gt; 1 ? { name: username, amount, bulkGifted: true } : { name: 'someone', sender: username, gifted: true })
+      : { name: username, amount: 1 });
+}
+function applySubGoal() { applyGoal(); }
+
+function spawnConfetti() {
+  const container = document.getElementById('messages-container');
+  if (!container) return;
+  const colors = ['#00ff41','#00A884','#FFD700','#FF6B6B','#4D96FF','#C77DFF','#FF9A3C'];
+  for (let i = 0; i &lt; 14; i++) {
+    setTimeout(() =&gt; {
+      const c = document.createElement('div');
+      c.className = 'confetti-piece';
+      c.style.cssText = `left:${15 + Math.random() * 70}%;bottom:10px;background:${colors[Math.floor(Math.random() * colors.length)]};animation-duration:${.65 + Math.random() * .45}s;`;
+      container.appendChild(c);
+      c.addEventListener('animationend', () =&gt; c.remove(), { once: true });
+    }, i * 55);
+  }
+}
+
+// =====================================================
+//   Direct Twitch connection (anonymous, read-only IRC over WebSocket)
+//   No login needed — works in OBS with  widget/?channel=yourchannel
+// =====================================================
+
+let twitchWS             = null;
+let twitchReconnectTimer = null;
+let twitchReconnectDelay = 1500;
+let twitchActiveChannel  = '';
+
+function connectTwitch(channel) {
+  const ch = String(channel || '').toLowerCase().replace(/^#/, '').trim();
+  if (!ch) return;
+  if (ch === twitchActiveChannel &amp;&amp; twitchWS &amp;&amp; twitchWS.readyState &lt;= 1) return;
+
+  disconnectTwitch();
+  twitchActiveChannel = ch;
+  setConnectionStatus('connecting');
+
+  const ws = new WebSocket('wss://irc-ws.chat.twitch.tv/');
+  twitchWS = ws;
+
+  ws.onopen = () =&gt; {
+    ws.send('CAP REQ :twitch.tv/tags twitch.tv/commands');
+    ws.send('PASS oauth:anonymous');
+    ws.send(`NICK justinfan${Math.floor(Math.random() * 80000) + 10000}`);
+    ws.send(`JOIN #${ch}`);
+  };
+
+  ws.onmessage = ({ data }) =&gt; {
+    data.split('\r\n').forEach(line =&gt; { if (line) handleIRCLine(line, ch); });
+  };
+
+  ws.onerror = () =&gt; setConnectionStatus('error');
+
+  ws.onclose = () =&gt; {
+    if (twitchActiveChannel !== ch) return;
+    setConnectionStatus('disconnected');
+    twitchReconnectDelay = Math.min(twitchReconnectDelay * 2, 30000);
+    twitchReconnectTimer = setTimeout(() =&gt; { twitchActiveChannel = ''; connectTwitch(ch); }, twitchReconnectDelay);
+  };
+}
+
+function disconnectTwitch() {
+  clearTimeout(twitchReconnectTimer);
+  twitchActiveChannel = '';
+  if (twitchWS) {
+    twitchWS.onclose = null;
+    twitchWS.close();
+    twitchWS = null;
+  }
+  setConnectionStatus('disconnected');
+}
+
+function handleIRCLine(line, ch) {
+  if (line.startsWith('PING')) { twitchWS?.send('PONG :tmi.twitch.tv'); return; }
+
+  if (line.includes(` JOIN #${ch}`)) {
+    twitchReconnectDelay = 1500;
+    setConnectionStatus('connected');
+    updateTitle(ch);
+    return;
+  }
+
+  const m = line.match(/^(?:@([^ ]+) )?:([^! ]+)(?:![^ ]+)? ([A-Z]+) #\S+(?: :(.*))?$/);
+  if (!m) return;
+
+  const [, tagsStr = '', username, command, text = ''] = m;
+  const tags = parseTags(tagsStr);
+
+  if (command === 'PRIVMSG') {
+    addMessage({
+      id:          tags['id'],
+      userId:      tags['user-id'],
+      displayName: tags['display-name'] || username,
+      username,
+      text,
+      color:  tags['color'] || null,
+      badges: parseBadges(tags['badges'] || ''),
+      emotes: parseEmotes(tags['emotes'] || '', text),
+    });
+    if (tags['bits']) {
+      handleStreamEvent('cheer-latest', { name: tags['display-name'] || username, amount: +tags['bits'] });
+    }
+  } else if (command === 'USERNOTICE') {
+    handleUserNotice(tags);
+  } else if (command === 'CLEARMSG') {
+    deleteMessage(tags['target-msg-id']);
+  } else if (command === 'CLEARCHAT') {
+    if (tags['target-user-id']) deleteUserMessages(tags['target-user-id']);
+  }
+}
+
+function parseTags(str) {
+  const t = {};
+  str.split(';').forEach(p =&gt; {
+    const i = p.indexOf('=');
+    if (i !== -1) t[p.slice(0, i)] = p.slice(i + 1).replace(/\\s/g, ' ');
+  });
+  return t;
+}
+
+function parseBadges(str) {
+  return String(str || '').split(',').filter(Boolean).map(b =&gt; ({ type: b.split('/')[0] }));
+}
+
+function parseEmotes(str) {
+  if (!str) return [];
+  const list = [];
+  str.split('/').forEach(part =&gt; {
+    if (!part) return;
+    const [id, positions] = part.split(':');
+    (positions || '').split(',').forEach(pos =&gt; {
+      const [start, end] = pos.split('-').map(Number);
+      if (!isNaN(start) &amp;&amp; !isNaN(end)) {
+        const url = `https://static-cdn.jtvnw.net/emoticons/v2/${id}/default/dark/1.0`;
+        list.push({ id, start, end, urls: { '1': url, '1x': url } });
+      }
+    });
+  });
+  return list;
+}
+
+function handleUserNotice(tags) {
+  const msgId = tags['msg-id'] || '';
+  const user  = tags['display-name'] || tags['login'] || 'Someone';
+
+  if (msgId === 'sub') {
+    handleStreamEvent('subscriber-latest', { name: user, amount: 1 });
+  } else if (msgId === 'resub') {
+    handleStreamEvent('subscriber-latest', { name: user, amount: +(tags['msg-param-cumulative-months'] || 1) });
+  } else if (msgId === 'subgift' || msgId === 'anonsubgift') {
+    // Gifts that belong to a mass gift are already counted by "submysterygift"
+    if (tags['msg-param-community-gift-id']) return;
+    handleStreamEvent('subscriber-latest', { name: tags['msg-param-recipient-display-name'] || 'someone', sender: user, gifted: true });
+  } else if (msgId === 'submysterygift') {
+    handleStreamEvent('subscriber-latest', { name: user, amount: +(tags['msg-param-mass-gift-count'] || 1), bulkGifted: true });
+  } else if (msgId === 'raid') {
+    handleStreamEvent('raid-latest', { name: tags['msg-param-displayName'] || user, amount: +(tags['msg-param-viewerCount'] || 0) });
+  }
+}
+
+function setConnectionStatus(status) {
+  const dot = document.getElementById('connection-dot');
+  if (dot) {
+    dot.className = `wa-online-dot conn-${status}`;
+    dot.title = {
+      connected:    `Connected to #${twitchActiveChannel}`,
+      connecting:   'Connecting…',
+      disconnected: 'Not connected',
+      error:        'Connection error',
+    }[status] ?? '';
+  }
+  try { window.parent.postMessage({ type: 'twitchStatus', status, channel: twitchActiveChannel }, '*'); } catch (_) {}
+}
+
+// =====================================================
+//   Configurator bridge (index.html drives the preview through postMessage,
+//   which also works when the files are opened locally with file://)
+// =====================================================
+
+window.addEventListener('message', ({ data }) =&gt; {
+  if (!data || typeof data.type !== 'string' || !data.type.startsWith('cmd:')) return;
+  switch (data.type) {
+    case 'cmd:config':
+      applyFields(data.config || {});
+      applyConfig();
+      break;
+    case 'cmd:message':    addMessage(data.data); break;
+    case 'cmd:event':      handleStreamEvent(data.listener, data.event || {}); break;
+    case 'cmd:goal':       setGoalValue(data.value, true); break;
+    case 'cmd:connect':    CONFIG.twitchChannel = data.channel || ''; applyConfig(); updateTitle(); break;
+    case 'cmd:disconnect': CONFIG.twitchChannel = ''; disconnectTwitch(); applyConfig(); break;
+    case 'cmd:clear':      document.getElementById('messages-list').innerHTML = ''; break;
+  }
+});
+
+// =====================================================
+//   Boot
+// =====================================================
+
+const IS_SE      = typeof window.SE_API !== 'undefined' || /streamelements\.com/.test(window.location.href);
+const IS_IFRAME  = window !== window.top;
+const HAS_PARAMS = applyUrlParams();
+const DEMO       = new URLSearchParams(window.location.search).has('demo');   // ?demo=1 → sample messages (used by the guide)
+goalValue = +CONFIG.goalCurrent || 0;
+
+function boot() {
+  // Opened directly with no settings → demo mode, so you can see what it looks like
+  if ((!IS_SE &amp;&amp; !IS_IFRAME &amp;&amp; !HAS_PARAMS) || DEMO) {
+    CONFIG.showGoal    = true;
+    CONFIG.goalCurrent = 45;
+    CONFIG.goalDesc    = 'Facecam at 100 subs!';
+    startDemo();
+  }
+  applyConfig();
+  try { window.parent.postMessage({ type: 'cmd:ready' }, '*'); } catch (_) {}
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+else boot();
+
+function startDemo() {
+  const SAMPLES = [
+    { displayName: 'StreamFan42',  username: 'streamfan42',  text: 'Hey everyone! 🎮',                        badges: [{ type: 'subscriber' }],                         color: '#FF6B6B' },
+    { displayName: 'ModPowerful',  username: 'modpowerful',  text: 'Welcome to the chat!',                     badges: [{ type: 'moderator' }],                          color: '#34AE1A' },
+    { displayName: 'CasualViewer', username: 'casualviewer', text: 'This game looks so good tonight 🔥',       badges: [],                                               color: null      },
+    { displayName: 'VIP_Legend',   username: 'vip_legend',   text: 'Love this stream, keep it up!',            badges: [{ type: 'vip' }],                                color: '#FF69B4' },
+    { displayName: 'Broadcaster',  username: 'broadcaster',  text: 'Thanks for the sub! &lt;3',                   badges: [{ type: 'broadcaster' }],                        color: '#FFD700' },
+    { displayName: 'SubGifter99',  username: 'subgifter99',  text: 'Just gifted 5 subs!',                      badges: [{ type: 'sub-gifter' }, { type: 'subscriber' }], color: '#C77DFF' },
+    { displayName: 'TwitchUser',   username: 'twitchuser',   text: 'Does anyone know this game?',              badges: [],                                               color: null      },
+    { displayName: 'NightBot',     username: 'nightbot',     text: '!commands to see the available commands',  badges: [{ type: 'moderator' }],                          color: '#1B9AF5' },
+  ];
+  let idx = 0;
+  const tick = () =&gt; {
+    addMessage(SAMPLES[idx % SAMPLES.length]);
+    idx++;
+    setTimeout(tick, 1800 + Math.random() * 2200);
+  };
+  setTimeout(tick, 600);
+}
+</textarea>
+      </div>
+      <div class="copy">
+        <div class="copy-head"><span class="num">4</span><div><b>streamelements/se-fields.txt</b> → paste into the <b class="acc">FIELDS</b> tab</div>
+          <button onclick="copyCode(3, this)">Copy FIELDS</button></div>
+        <textarea id="code3" readonly>{
+  "twitchChannel": {
+    "type": "text",
+    "label": "Twitch channel — direct connection (leave empty on StreamElements)",
+    "value": ""
+  },
+  "streamName": {
+    "type": "text",
+    "label": "Name shown in the terminal title bar",
+    "value": "Twitch Chat"
+  },
+  "theme": {
+    "type": "dropdown",
+    "label": "Theme",
+    "value": "dark",
+    "options": {
+      "dark": "Dark (classic terminal)",
+      "light": "Light",
+      "amoled": "AMOLED (pure black)"
+    }
+  },
+  "accentColor": {
+    "type": "colorpicker",
+    "label": "Accent color",
+    "value": "#00ff41"
+  },
+  "fontSize": {
+    "type": "slider",
+    "label": "Text size (px)",
+    "value": 14,
+    "min": 10,
+    "max": 28,
+    "step": 1
+  },
+  "chatWidth": {
+    "type": "slider",
+    "label": "Chat width (%)",
+    "value": 100,
+    "min": 30,
+    "max": 100,
+    "step": 5
+  },
+  "alignment": {
+    "type": "dropdown",
+    "label": "Alignment",
+    "value": "left",
+    "options": {
+      "left": "Left",
+      "right": "Right",
+      "center": "Center"
+    }
+  },
+  "messageAnimation": {
+    "type": "dropdown",
+    "label": "Entry animation",
+    "value": "type",
+    "options": {
+      "type": "Typewriter",
+      "slide": "Slide",
+      "fade": "Fade",
+      "none": "None"
+    }
+  },
+  "showHeader": {
+    "type": "checkbox",
+    "label": "Terminal title bar",
+    "value": true
+  },
+  "showInputBar": {
+    "type": "checkbox",
+    "label": "Prompt bar (decorative)",
+    "value": true
+  },
+  "maxMessages": {
+    "type": "slider",
+    "label": "Maximum number of messages",
+    "value": 15,
+    "min": 3,
+    "max": 30,
+    "step": 1
+  },
+  "messageDuration": {
+    "type": "slider",
+    "label": "Message lifetime in seconds (0 = forever)",
+    "value": 0,
+    "min": 0,
+    "max": 120,
+    "step": 5
+  },
+  "showTimestamp": {
+    "type": "checkbox",
+    "label": "Show timestamps",
+    "value": true
+  },
+  "showBadges": {
+    "type": "checkbox",
+    "label": "Show role badges",
+    "value": true
+  },
+  "badgeStyle": {
+    "type": "dropdown",
+    "label": "Badge style",
+    "value": "text",
+    "options": {
+      "text": "Terminal tags [MOD] [VIP] [SUB]",
+      "icon": "Icons"
+    }
+  },
+  "showAvatars": {
+    "type": "checkbox",
+    "label": "Show avatars",
+    "value": false
+  },
+  "modColor": {
+    "type": "colorpicker",
+    "label": "Moderator color",
+    "value": "#00ff88"
+  },
+  "vipColor": {
+    "type": "colorpicker",
+    "label": "VIP color",
+    "value": "#e91e8c"
+  },
+  "subColor": {
+    "type": "colorpicker",
+    "label": "Subscriber color",
+    "value": "#ffc200"
+  },
+  "showAlerts": {
+    "type": "checkbox",
+    "label": "── ALERTS ── Show alert pop-ups",
+    "value": true
+  },
+  "alertDuration": {
+    "type": "slider",
+    "label": "Alert duration (seconds)",
+    "value": 5,
+    "min": 2,
+    "max": 15,
+    "step": 1
+  },
+  "currency": {
+    "type": "dropdown",
+    "label": "Currency for donations",
+    "value": "$",
+    "options": {
+      "$": "Dollar ($)",
+      "€": "Euro (€)",
+      "£": "Pound (£)",
+      "auto": "Automatic (my StreamElements currency)"
+    }
+  },
+  "showGoal": {
+    "type": "checkbox",
+    "label": "── GOAL BAR ── Show goal bar",
+    "value": false
+  },
+  "goalType": {
+    "type": "dropdown",
+    "label": "Goal — Objective type",
+    "value": "subs",
+    "options": {
+      "followers": "Followers",
+      "subs": "Subscribers",
+      "bits": "Bits",
+      "donations": "Donations"
+    }
+  },
+  "goalTitle": {
+    "type": "text",
+    "label": "Goal — Display title",
+    "value": "Sub goal"
+  },
+  "goalDesc": {
+    "type": "text",
+    "label": "Goal — Description (e.g. Facecam at 100 subs!)",
+    "value": ""
+  },
+  "goalCurrent": {
+    "type": "number",
+    "label": "Goal — Starting value",
+    "value": 0
+  },
+  "goalTarget": {
+    "type": "number",
+    "label": "Goal — Target value",
+    "value": 100
+  },
+  "goalOrientation": {
+    "type": "dropdown",
+    "label": "Goal — Bar orientation",
+    "value": "horizontal",
+    "options": {
+      "horizontal": "Horizontal (top of the terminal)",
+      "vertical": "Vertical (right side)"
+    }
+  },
+  "goalColor": {
+    "type": "colorpicker",
+    "label": "Goal — Bar color",
+    "value": "#00ff41"
+  },
+  "goalAutoTrack": {
+    "type": "checkbox",
+    "label": "Goal — Auto-count stream events",
+    "value": true
+  }
+}
+</textarea>
+      </div>
+<div class="tip"><b>Leave the Twitch channel setting empty</b> in StreamElements: StreamElements already sends your chat to the widget.</div>
+
+<h2><span class="n">★</span>Make it yours</h2>
+<div class="card"><table><tr><th>What you can change</th></tr><tr><td>Theme: Dark, Light or AMOLED</td></tr><tr><td>Accent color, role colors</td></tr><tr><td>Text size (title bar &amp; prompt grow too)</td></tr><tr><td>Typewriter, slide, fade animations</td></tr><tr><td>Terminal tags [MOD] or icons</td></tr><tr><td>Alerts, currency ($ by default)</td></tr><tr><td>ASCII goal bar: type, target, orientation</td></tr></table></div>
+
+<h2 id="help"><span class="n">?</span>Something doesn't work?</h2>
+<details><summary>The chat stays empty</summary><p>Check the channel name (no spaces, no link, just the name). The chat only shows new messages: ask a friend to type something, or use the test buttons in the configurator.</p></details>
+<details><summary>Follows or donations don't show</summary><p>The OBS-only method can't see follows and donations (Twitch doesn't share them without an account). Use the StreamElements method (B) to get them.</p></details>
+<details><summary>It worked, then it's blank in OBS</summary><p>You probably moved or renamed the folder. Open <code>index.html</code> again from the new place and copy a new OBS link.</p></details>
+<details><summary>I pasted and nothing appears in StreamElements</summary><p>Make sure each file went into the right tab and that you replaced everything that was there before (<kbd>Ctrl</kbd> + <kbd>A</kbd> first). Then click Done and Save.</p></details>
+<details><summary>The text is too small or too big</summary><p>Change the "Text size" setting. The title bar, goal and prompt grow with it.</p></details>
+<details><summary>Donations show in the wrong currency</summary><p>Change "Currency for donations": Dollar by default, Euro, Pound, or Automatic (your StreamElements currency).</p></details>
+<details><summary>Does it work on Kick or YouTube?</summary><p>No, this widget reads Twitch chat only.</p></details>
+
+<div class="foot"><h3 style="color:#fff;margin:0 0 6px">Still stuck? We've got you.</h3>
+<p>Send us a message on Etsy with a screenshot: we reply within 24 hours and help you set it up.<br>Thank you for choosing <b>VANTRA STUDIO</b>.</p></div>
+</div>
+
+<script>
+function copyCode(i, btn) {
+  const t = document.getElementById('code' + i);
+  const done = () => { const old = btn.textContent; btn.textContent = '✓ Copied!'; btn.classList.add('done'); setTimeout(() => { btn.textContent = old; btn.classList.remove('done'); }, 1800); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t.value).then(done, () => { t.select(); document.execCommand('copy'); done(); });
+  else { t.select(); document.execCommand('copy'); done(); }
+}
+</script>
+</body>
+</html>

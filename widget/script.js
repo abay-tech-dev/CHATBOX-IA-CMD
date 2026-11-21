@@ -767,11 +767,12 @@ window.addEventListener('message', ({ data }) => {
 const IS_SE      = typeof window.SE_API !== 'undefined' || /streamelements\.com/.test(window.location.href);
 const IS_IFRAME  = window !== window.top;
 const HAS_PARAMS = applyUrlParams();
+const DEMO       = new URLSearchParams(window.location.search).has('demo');   // ?demo=1 → sample messages (used by the guide)
 goalValue = +CONFIG.goalCurrent || 0;
 
 function boot() {
   // Opened directly with no settings → demo mode, so you can see what it looks like
-  if (!IS_SE && !IS_IFRAME && !HAS_PARAMS) {
+  if ((!IS_SE && !IS_IFRAME && !HAS_PARAMS) || DEMO) {
     CONFIG.showGoal    = true;
     CONFIG.goalCurrent = 45;
     CONFIG.goalDesc    = 'Facecam at 100 subs!';
