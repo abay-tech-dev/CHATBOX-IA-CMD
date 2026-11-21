@@ -50,22 +50,6 @@
       "center": "Center"
     }
   },
-  "perspectiveX": {
-    "type": "slider",
-    "label": "3D Rotation — X axis (up/down)",
-    "value": 0,
-    "min": -45,
-    "max": 45,
-    "step": 1
-  },
-  "perspectiveY": {
-    "type": "slider",
-    "label": "3D Rotation — Y axis (left/right)",
-    "value": 0,
-    "min": -45,
-    "max": 45,
-    "step": 1
-  },
   "messageAnimation": {
     "type": "dropdown",
     "label": "Entry animation",

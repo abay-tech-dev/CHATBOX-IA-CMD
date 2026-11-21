@@ -6,7 +6,7 @@ Terminal / Linux themed Twitch chat overlay for OBS and StreamElements.
 
 - Terminal window look: title bar, `[SYS]` lines, decorative prompt with a blinking cursor
 - Themes: Dark, Light, AMOLED + custom accent color
-- Chat width, alignment (left / right / center) and **3D rotation on the X and Y axes**
+- Chat width and alignment (left / right / center)
 - Entry animations: typewriter, slide, fade, none
 - Role badges as terminal tags (`[MOD]` `[VIP]` `[SUB]` `[LIVE]`) or icons, with custom role colors
 - Optional timestamps and avatars, max messages, message lifetime

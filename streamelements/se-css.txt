@@ -46,14 +46,12 @@ html, body {
   background: transparent;
 }
 
-/* ── Stage: fills the OBS browser source exactly, hosts the 3D perspective ── */
+/* ── Stage: fills the OBS browser source exactly ── */
 #stage {
   position: fixed;
   inset: 0;
   display: flex;
   justify-content: flex-start;
-  perspective: 1200px;
-  perspective-origin: 50% 50%;
 }
 :root[data-align="right"]  #stage { justify-content: flex-end; }
 :root[data-align="center"] #stage { justify-content: center; }
@@ -71,8 +69,7 @@ html, body {
   overflow: hidden;
   border: 1px solid var(--header-border);
   border-radius: 8px;
-  transform-style: preserve-3d;
-  transition: transform .6s cubic-bezier(0.2, 0, 0, 1), width .3s ease;
+  transition: width .3s ease;
 }
 
 /* ── Title bar ── */

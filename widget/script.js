@@ -14,8 +14,6 @@ const CONFIG = {
   fontSize:         14,
   chatWidth:        100,         // % of the browser source width
   alignment:        'left',      // left | right | center
-  perspectiveX:     0,           // 3D rotation, degrees
-  perspectiveY:     0,
   messageAnimation: 'type',      // type | slide | fade | none
 
   // Terminal chrome
@@ -213,10 +211,8 @@ function applyConfig() {
   root.style.setProperty('--sub-color',  validHex(CONFIG.subColor)    || DEFAULTS.subColor);
   root.style.setProperty('--goal-color', validHex(CONFIG.goalColor)   || 'var(--accent)');
 
-  // Size, position & 3D rotation of the terminal window
+  // Size & position of the terminal window
   term.style.width = `${Math.min(100, Math.max(20, +CONFIG.chatWidth || 100))}%`;
-  const rx = +CONFIG.perspectiveX || 0, ry = +CONFIG.perspectiveY || 0;
-  term.style.transform = (rx || ry) ? `rotateX(${rx}deg) rotateY(${ry}deg)` : '';
 
   updateTitle(twitchActiveChannel);
 
