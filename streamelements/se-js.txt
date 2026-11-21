@@ -34,6 +34,7 @@ const CONFIG = {
   // Alerts
   showAlerts:       true,
   alertDuration:    5,
+  currency:         '$',         // $ | € | £ | auto (your StreamElements account currency)
 
   // Goal
   showGoal:         false,
@@ -70,6 +71,7 @@ const ALERT_ICONS = { follow: '♥', sub: '★', giftsub: '🎁', bits: '◆', d
 
 let msgCount  = 0;
 let goalValue = 0;
+let seCurrencySymbol = '';   // filled by StreamElements on load (currency of your SE account)
 
 // =====================================================
 //   StreamElements events
@@ -77,6 +79,7 @@ let goalValue = 0;
 
 window.addEventListener('onWidgetLoad', ({ detail }) => {
   if (detail?.fieldData) applyFields(detail.fieldData);
+  seCurrencySymbol = detail?.currency?.symbol || '';
   goalValue = +CONFIG.goalCurrent || 0;
   applyConfig();
 });
@@ -144,7 +147,7 @@ function handleStreamEvent(listener, ev) {
 
     case 'tip-latest':
       trackGoal('donations', amount);
-      fireAlert('donation', `DONATION ${amount}€`, `${name} donated ${amount}€!${msg}`);
+      fireAlert('donation', `DONATION ${money(amount)}`, `${name} donated ${money(amount)}!${msg}`);
       break;
 
     case 'raid-latest':
@@ -251,6 +254,18 @@ function escHtml(t) {
 
 function validHex(c) {
   return typeof c === 'string' && /^#[0-9a-f]{6}$/i.test(c) ? c : '';
+}
+
+// Donation amounts: "$10.50", "10,50 €", "£10.50"
+function currencySymbol() {
+  return CONFIG.currency === 'auto' ? (seCurrencySymbol || '$') : (CONFIG.currency || '$');
+}
+
+function money(n) {
+  const v = +n || 0;
+  const num = v.toLocaleString('en-US', { minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 });
+  const sym = currencySymbol();
+  return sym === '€' ? `${num.replace('.', ',')} €` : `${sym}${num}`;
 }
 
 function formatTime() {
@@ -451,7 +466,7 @@ function nextAlert() {
 //   Goal (ASCII progress bar, horizontal or vertical)
 // =====================================================
 
-const GOAL_UNITS = { followers: 'followers', subs: 'subs', bits: 'bits', donations: '€' };
+const GOAL_UNITS = { followers: 'followers', subs: 'subs', bits: 'bits', donations: '' };
 
 function applyGoal() {
   const term = document.getElementById('widget-container');
@@ -494,7 +509,7 @@ function renderGoalBar() {
   if (!CONFIG.showGoal) return;
   const pct      = goalPct();
   const complete = goalValue >= CONFIG.goalTarget;
-  const fmt      = n => Math.floor(n).toLocaleString('en-US');
+  const fmt      = CONFIG.goalType === 'donations' ? money : n => Math.floor(n).toLocaleString('en-US');
 
   document.querySelectorAll('.goal-fraction-text').forEach(el => { el.textContent = `${fmt(goalValue)} / ${fmt(CONFIG.goalTarget)}`; });
   document.querySelectorAll('.goal-current-text').forEach(el => { el.textContent = fmt(goalValue); });
@@ -538,7 +553,7 @@ function setGoalValue(value, pulse = false) {
 
   if (!before && goalValue >= CONFIG.goalTarget) {
     setTimeout(() => {
-      addSystemMessage(`${ALERT_ICONS.goal} Goal reached! ${CONFIG.goalTarget} ${GOAL_UNITS[CONFIG.goalType] || ''}`, 'goal');
+      addSystemMessage(`${ALERT_ICONS.goal} Goal reached! ${CONFIG.goalType === 'donations' ? money(CONFIG.goalTarget) : CONFIG.goalTarget + ' ' + GOAL_UNITS[CONFIG.goalType]}`, 'goal');
       spawnConfetti();
     }, 600);
   }

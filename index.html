@@ -951,6 +951,15 @@
         <div class="section-title">Alerts</div>
         <div class="toggle-row" style="border-bottom:none"><span class="toggle-name">Show alert pop-ups</span><label class="toggle-switch"><input type="checkbox" data-key="showAlerts" checked /><span class="toggle-track"></span></label></div>
         <div class="ctrl-row" style="margin-top:6px">
+          <label class="ctrl-label">Currency for donations</label>
+          <select class="ctrl-select" data-key="currency">
+            <option value="$" selected>Dollar ($)</option>
+            <option value="€">Euro (€)</option>
+            <option value="£">Pound (£)</option>
+            <option value="auto">Automatic (StreamElements currency)</option>
+          </select>
+        </div>
+        <div class="ctrl-row">
           <label class="ctrl-label">Alert duration</label>
           <div class="range-wrap"><input class="ctrl-range" data-key="alertDuration" data-fmt="s" type="range" min="2" max="15" value="5" /><span class="range-val"></span></div>
         </div>
@@ -980,7 +989,7 @@
                 <option value="followers">Followers</option>
                 <option value="subs" selected>Subscribers</option>
                 <option value="bits">Bits</option>
-                <option value="donations">Donations (€)</option>
+                <option value="donations">Donations</option>
               </select>
             </div>
             <div class="ctrl-row">
